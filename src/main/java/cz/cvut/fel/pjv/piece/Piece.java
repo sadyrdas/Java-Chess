@@ -4,7 +4,8 @@ import cz.cvut.fel.pjv.Alliance;
 import cz.cvut.fel.pjv.board.Board;
 import cz.cvut.fel.pjv.board.Move;
 
-import java.util.List;
+import java.util.Collection;
+
 
 public abstract class Piece {
     protected final int piecePosition;
@@ -14,8 +15,10 @@ public abstract class Piece {
         this.pieceAlliance = pieceAlliance;
         this.piecePosition = piecePosition;
     }
-
-    public abstract List<Move> writeLegalMoves(final Board board);
+    public Alliance getPieceAlliance() {
+        return this.pieceAlliance;
+    }
+    public abstract Collection<Move> writeLegalMoves(final Board board);
 
 
 }
