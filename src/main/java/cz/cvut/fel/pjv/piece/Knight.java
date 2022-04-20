@@ -53,7 +53,7 @@ public class Knight extends Piece {
         }
         return ImmutableList.copyOf(legalMoves);
     }
-
+// Zde uvádím výjimky,Které se provádějí při posunutí kamnú na určitou dlaždici.
     private static boolean IsFirstColumExclusion(final int currentPosition, final int candidateOffset) {
         return BoardUtils.FIRST_COLUM[currentPosition] && (candidateOffset == -17 || candidateOffset == -10 ||
                 candidateOffset == 6 || candidateOffset == 15);
