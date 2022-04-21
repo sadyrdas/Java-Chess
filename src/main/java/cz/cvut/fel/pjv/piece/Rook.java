@@ -11,17 +11,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class Bishop extends Piece {
+public class Rook extends Piece{
 
-    private final static int[] POSSIBLE_MOVE_VECTOR_COORDINATES = {-9, -7, 7, 9};
+    private final static int[] POSSIBLE_MOVE_VECTOR_COORDINATES = {-8, -1, 1, 8};
 
-    Bishop(int piecePosition, Alliance pieceAlliance) {
+
+    Rook(int piecePosition, Alliance pieceAlliance) {
         super(piecePosition, pieceAlliance);
     }
 
-    //Nejprve jsem identifikoval všechny možné pohyby bispkupa jako seznam
-//S pomocí smyčky jsem je prošel a pokud dlaždice existuje a je zdarma nebo ma nejaky jiny kamen,
-// pak udelam break, abychom mohl vyjit z smycky
     @Override
     public Collection<Move> writeLegalMoves(final Board board) {
 
@@ -54,11 +52,11 @@ public class Bishop extends Piece {
     }
 
     private static boolean isFirstColumnExclusion(final int currentPosition, final int candidateOffSEt) {
-        return BoardUtils.FIRST_COLUM[currentPosition] && (currentPosition == -9) || (candidateOffSEt == 7);
+        return BoardUtils.FIRST_COLUM[currentPosition] && (currentPosition == -1);
     }
 
     private static boolean isEigthColumnExclusion(final int currentPosition, final int candidateOffSEt) {
-        return BoardUtils.EIGTH_COLUM[currentPosition] && (currentPosition == -7) || (candidateOffSEt == 9);
+        return BoardUtils.EIGTH_COLUM[currentPosition] && (currentPosition == -1);
 
     }
 }

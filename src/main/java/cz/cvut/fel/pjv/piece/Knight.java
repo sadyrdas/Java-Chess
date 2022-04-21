@@ -9,6 +9,9 @@ import cz.cvut.fel.pjv.board.Tile;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static cz.cvut.fel.pjv.board.Move.*;
+
 // Vytvořil jsem logiku koně pohybů podle obrázků na internetu,
 // které zobrazovaly pravidla, podle kterých kún chodí.
 public class Knight extends Piece {
@@ -23,7 +26,7 @@ public class Knight extends Piece {
 //S pomocí smyčky jsem je prošel a pokud dlaždice existuje a je zdarma,
 // pak jsem jen dal svého koně tam, pokud ne, pak dávám informace o tom, co je Aliance (bílá nebo černá).
     @Override
-    public List<Move> writeLegalMoves(Board board) {
+    public List<Move> writeLegalMoves(final Board board) {
         final List<Move> legalMoves = new ArrayList<>();
 
         for (final int currentCandidateOffSet : POSSIBLE_MOVE_COORDINATES) {
@@ -40,12 +43,12 @@ public class Knight extends Piece {
 
                 final Tile possibleCoordinateTile = board.getTile(possibleCoordinate);
                 if (possibleCoordinateTile.IsTileOccupied()) {
-                    legalMoves.add(new Move());
+                    legalMoves.add(new MajorMove(board, this, possibleCoordinate));
                 } else {
                     final Piece pieceAtDestination = possibleCoordinateTile.getPiece();
                     final Alliance pieceAlliance = pieceAtDestination.getPieceAlliance();
                     if (this.pieceAlliance != pieceAlliance) {
-                        legalMoves.add(new Move());
+                        legalMoves.add(new AttackMove(board, this, possibleCoordinate, pieceAtDestination));
                     }
                 }
             }
