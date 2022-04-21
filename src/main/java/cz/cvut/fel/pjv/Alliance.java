@@ -1,6 +1,18 @@
 package cz.cvut.fel.pjv;
 
 public enum Alliance {
-    White,
-    Black
+    WHITE {
+        @Override
+        public int getDirection() {
+            return -1;
+        }
+    },
+    BLACK {
+        @Override
+        public int getDirection() {
+            return 1;
+        }
+    };
+
+    public abstract int getDirection();
 }
