@@ -6,6 +6,9 @@ public class BoardUtils {
     public static final boolean[] SEVEN_COLUM = initColumn(6);
     public static final boolean[] EIGTH_COLUM = initColumn(7);
 
+    public static final boolean[] SECOND_ROW = null;
+    public static final boolean[] SEVENTH_ROW = null;
+
     public static final int NUM_TILES = 64;
     public static final int NUM_TILES_PER_NOW = 8;
     //Zde chci Inicializovat a ovládat konkrétní dlaždice ve sloupci na šachovnici.
