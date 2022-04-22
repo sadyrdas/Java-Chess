@@ -11,7 +11,7 @@ public class BoardUtils {
 
     public static final int NUM_TILES = 64;
     public static final int NUM_TILES_PER_NOW = 8;
-    //Zde chci Inicializovat a ovládat konkrétní dlaždice ve sloupci na šachovnici.
+    //Here I want to initialize and control specific tiles in a column on the chessboard.
     private static boolean[] initColumn(int columnNumber) {
         final boolean[] column = new boolean[64];
         do {

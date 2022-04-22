@@ -12,8 +12,8 @@ import java.util.List;
 
 import static cz.cvut.fel.pjv.board.Move.*;
 
-// Vytvořil jsem logiku koně pohybů podle obrázků na internetu,
-// které zobrazovaly pravidla, podle kterých kún chodí.
+//I created the logic of the horse's movements according to pictures on the internet,
+// which depicted the rules by which the horse walks.
 public class Knight extends Piece {
 
     private final static int[] POSSIBLE_MOVE_COORDINATES = {-17, -15, -10, -6, 6, 10, 15, 17};
@@ -22,9 +22,9 @@ public class Knight extends Piece {
         super(piecePosition, pieceAlliance);
     }
 
-    //Nejprve jsem identifikoval všechny možné pohyby koně jako seznam
-//S pomocí smyčky jsem je prošel a pokud dlaždice existuje a je zdarma,
-// pak jsem jen dal svého koně tam, pokud ne, pak dávám informace o tom, co je Aliance (bílá nebo černá).
+    //First, I identified all the possible movements of the horse as a list
+    //With the help of a loop I passed them and if the tile exists and is free,
+    //then I just put my horse there, if not, then I give information about what the alliance is (white or black).
     @Override
     public List<Move> writeLegalMoves(final Board board) {
         final List<Move> legalMoves = new ArrayList<>();
@@ -56,7 +56,7 @@ public class Knight extends Piece {
         }
         return ImmutableList.copyOf(legalMoves);
     }
-// Zde uvádím výjimky,Které se provádějí při posunutí kamnú na určitou dlaždici.
+// Here I have the exceptions that are made when moving the stove to a certain tile.
     private static boolean IsFirstColumExclusion(final int currentPosition, final int candidateOffset) {
         return BoardUtils.FIRST_COLUM[currentPosition] && (candidateOffset == -17 || candidateOffset == -10 ||
                 candidateOffset == 6 || candidateOffset == 15);

@@ -19,9 +19,9 @@ public class Bishop extends Piece {
         super(piecePosition, pieceAlliance);
     }
 
-    //Nejprve jsem identifikoval všechny možné pohyby bispkupa jako seznam
-//S pomocí smyčky jsem je prošel a pokud dlaždice existuje a je zdarma nebo ma nejaky jiny kamen,
-// pak udelam break, abychom mohl vyjit z smycky
+    //First, I identified all possible bispkup moves as a list
+    //With the help of the loop, I passed them and if the tile exists and is free or has some other stove,
+    // then I will make a break so that we can come out of the loop
     @Override
     public Collection<Move> writeLegalMoves(final Board board) {
 

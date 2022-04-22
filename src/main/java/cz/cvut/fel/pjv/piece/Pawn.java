@@ -40,6 +40,7 @@ public class Pawn extends Piece {
                 if(!board.getTile(behindPossibleCoordinate).IsTileOccupied() &&
                         !board.getTile(possibleCoordinate).IsTileOccupied()) ;
                 legalMoves.add(new Move.MajorMove(board, this, possibleCoordinate));
+            //Here I have recorded exceptions for black pawns, namely on the edges of the chessboard.
             }else if(currentCandidateOffset == 7 &&
                     !((BoardUtils.EIGTH_COLUM[this.piecePosition] && this.pieceAlliance.isWhite() ||
                     (BoardUtils.FIRST_COLUM[this.piecePosition] && this.pieceAlliance.isBlack())))) {
@@ -50,6 +51,7 @@ public class Pawn extends Piece {
                         legalMoves.add(new Move.MajorMove(board, this, possibleCoordinate));
                     }
                 }
+            //Here I have recorded exceptions for white pawns, namely on the edges of the chessboard.
             }else if(currentCandidateOffset == 9 &&
                     !((BoardUtils.FIRST_COLUM[this.piecePosition] && this.pieceAlliance.isWhite() ||
                             (BoardUtils.EIGTH_COLUM[this.piecePosition] && this.pieceAlliance.isBlack())))) {

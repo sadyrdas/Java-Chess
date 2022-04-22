@@ -19,7 +19,7 @@ public class Rook extends Piece{
     Rook(int piecePosition, Alliance pieceAlliance) {
         super(piecePosition, pieceAlliance);
     }
-
+    ////In this part of the code, I have spelled out all the legal moves of the rook.
     @Override
     public Collection<Move> writeLegalMoves(final Board board) {
 
@@ -50,7 +50,7 @@ public class Rook extends Piece{
         }
         return ImmutableList.copyOf(legalMoves);
     }
-
+    //Here I have prescribed exceptions for the rook's moves.
     private static boolean isFirstColumnExclusion(final int currentPosition, final int candidateOffSEt) {
         return BoardUtils.FIRST_COLUM[currentPosition] && (currentPosition == -1);
     }

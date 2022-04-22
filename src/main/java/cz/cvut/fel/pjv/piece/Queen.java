@@ -18,7 +18,7 @@ public class Queen extends Piece{
     Queen(int piecePosition, Alliance pieceAlliance) {
         super(piecePosition, pieceAlliance);
     }
-
+//In this part of the code, I have spelled out all the legal moves of the queen.
     @Override
     public Collection<Move> writeLegalMoves(final Board board) {
 
@@ -49,7 +49,7 @@ public class Queen extends Piece{
         }
         return ImmutableList.copyOf(legalMoves);
     }
-
+    //Here I have prescribed exceptions for the queen's moves.
     private static boolean isFirstColumnExclusion(final int currentPosition, final int candidateOffSEt) {
         return BoardUtils.FIRST_COLUM[currentPosition] && (candidateOffSEt == -1 || currentPosition == -9 || candidateOffSEt == 7);
     }
