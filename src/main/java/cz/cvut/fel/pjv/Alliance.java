@@ -1,5 +1,5 @@
 package cz.cvut.fel.pjv;
-
+//In this class, I describe the privatization of figures to alliances.
 public enum Alliance {
     WHITE {
         @Override

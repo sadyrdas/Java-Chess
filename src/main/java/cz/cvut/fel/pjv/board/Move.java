@@ -1,7 +1,7 @@
 package cz.cvut.fel.pjv.board;
 
 import cz.cvut.fel.pjv.piece.Piece;
-
+//This class describes all moves off pieces.
 public abstract class Move {
 
     final Board board;

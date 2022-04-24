@@ -6,7 +6,7 @@ import cz.cvut.fel.pjv.board.Move;
 
 import java.util.Collection;
 
-
+//This is the general class of all figures, I indicate here the position of the figure and the alliance of the figure (black and white).
 public abstract class Piece {
     protected final int piecePosition;
     protected final Alliance pieceAlliance;

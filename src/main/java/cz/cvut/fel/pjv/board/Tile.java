@@ -1,5 +1,5 @@
 package cz.cvut.fel.pjv.board;
-
+//This class describes a chessboard tile.
 import com.google.common.collect.ImmutableMap;
 import cz.cvut.fel.pjv.piece.Piece;
 
@@ -9,7 +9,7 @@ import java.util.Map;
 public abstract class Tile {
     private static Piece piece;
     protected final int tileCoordinate;
-
+//This function creates all empty tiles.
     private static final Map<Integer, EmptyTile> EMPTY_TILE_CACHE = createAllPossibleEmptyTiles();
     private static Map<Integer, EmptyTile> createAllPossibleEmptyTiles() {
         final Map<Integer, EmptyTile> emptyTileMap = new HashMap<>();
@@ -44,6 +44,7 @@ public abstract class Tile {
             return null;
         }
     }
+    //This function describes all occupied tiles.
     public static final class OccupiedTile extends Tile {
         private final Piece pieceOnTile;
         OccupiedTile(int tileCoordinate, final Piece placeOnTile) {
