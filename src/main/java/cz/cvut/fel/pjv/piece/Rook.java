@@ -16,7 +16,7 @@ public class Rook extends Piece{
     private final static int[] POSSIBLE_MOVE_VECTOR_COORDINATES = {-8, -1, 1, 8};
 
 
-    Rook(int piecePosition, Alliance pieceAlliance) {
+    public Rook(final Alliance pieceAlliance,final int piecePosition) {
         super(piecePosition, pieceAlliance);
     }
     ////In this part of the code, I have spelled out all the legal moves of the rook.

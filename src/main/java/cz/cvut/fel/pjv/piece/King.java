@@ -16,7 +16,7 @@ public class King extends Piece{
     private final static int[] POSSIBLE_MOVE_COORDINATES = {-9, -8, -7, -1, 1, 7, 8, 9};
 
 
-    King(int piecePosition, Alliance pieceAlliance) {
+    public King(final Alliance pieceAlliance, final int piecePosition) {
         super(piecePosition, pieceAlliance);
     }
     //In this part of the code, I have spelled out all the legal moves of the king.

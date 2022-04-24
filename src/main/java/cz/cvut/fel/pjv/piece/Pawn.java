@@ -14,7 +14,7 @@ public class Pawn extends Piece {
 
     private final static int[] POSSIBLE_MOVE_COORDINATES = {8, 16, 7, 9};
 
-    Pawn(final int piecePosition, final Alliance pieceAlliance) {
+    public Pawn(final Alliance pieceAlliance, final int piecePosition) {
         super(piecePosition, pieceAlliance);
     }
     //First of all, I prescribed legal pawn moves. 1) Non-attacking moves, 2) Jumping over one tile.
@@ -62,7 +62,6 @@ public class Pawn extends Piece {
                         legalMoves.add(new Move.MajorMove(board, this, possibleCoordinate));
                     }
                 }
-
             }
         }
         return ImmutableList.copyOf(legalMoves);
