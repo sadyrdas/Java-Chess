@@ -2,7 +2,7 @@ package cz.cvut.fel.pjv;
 
 import cz.cvut.fel.pjv.board.Board;
 
-public class JChess {
+public class StandardBoard {
     public static void main(String[] args) {
         Board board = Board.createStandardBoard();
 
