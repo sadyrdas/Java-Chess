@@ -35,12 +35,12 @@ public class King extends Piece{
 
             if(BoardUtils.isValidTileCoordinate(possibleCoordinate)) {
                 final Tile possibleCoordinateTile = board.getTile(possibleCoordinate);
-                if (possibleCoordinateTile.IsTileOccupied()) {
-                    legalMoves.add(new Move.MajorMove(board, this, possibleCoordinate));
+                if (!possibleCoordinateTile.IsTileOccupied()) {
+                    legalMoves.add(new Move.MainMove(board, this, possibleCoordinate));
                 } else {
                     final Piece pieceAtDestination = possibleCoordinateTile.getPiece();
-                    final Alliance pieceAlliance = pieceAtDestination.getPieceAlliance();
-                    if (this.pieceAlliance != pieceAlliance) {
+                    final Alliance pieceAlliance = pieceAtDestination.getPieceTeam();
+                    if (this.pieceTeam != pieceAlliance) {
                         legalMoves.add(new Move.AttackMove(board, this, possibleCoordinate, pieceAtDestination));
                     }
                 }
@@ -49,6 +49,12 @@ public class King extends Piece{
 
         return ImmutableList.copyOf(legalMoves);
     }
+
+    @Override
+    public String toString() {
+        return PieceType.KING.toString();
+    }
+
     //Here I have prescribed exceptions for the king's moves.
     private static boolean IsFirstColumExclusion(final int currentPosition, final int candidateOffset) {
         return BoardUtils.FIRST_COLUM[currentPosition] && (candidateOffset == -9 || candidateOffset == -1 ||
@@ -56,7 +62,7 @@ public class King extends Piece{
     }
 
     private static boolean IsEightColumExclusion(final int currentPosition, final int candidateOffset) {
-        return BoardUtils.EIGTH_COLUM[currentPosition] && (candidateOffset == -7 || candidateOffset == 1 || candidateOffset == 9);
+        return BoardUtils.EIGHT_COLUM[currentPosition] && (candidateOffset == -7 || candidateOffset == 1 || candidateOffset == 9);
     }
 
 }

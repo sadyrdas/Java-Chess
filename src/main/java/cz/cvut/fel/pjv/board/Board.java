@@ -17,16 +17,41 @@ public class Board {
         this.gameBoard = createGameBoard(builder);
         this.whitePieces = writeActivePieces(this.gameBoard, Alliance.WHITE);
         this.blackPieces = writeActivePieces(this.gameBoard, Alliance.BLACK);
-        
+
+        final Collection<Move> whiteStandardLegalMoves = writeLegalMoves(this.whitePieces);
+        final Collection<Move> blackStandardLegalMoves = writeLegalMoves(this.blackPieces);
+
+    }
+// this method will print board in text show ASCII
+    @Override
+    public String toString() {
+        final StringBuilder builder = new StringBuilder();
+        for(int i = 0; i < BoardUtils.TILES; i++) {
+            final String tileText = this.gameBoard.get(i).toString();
+            builder.append(String.format("%3s", tileText));
+            if((i + 1) % BoardUtils.TILES_PER_ROW == 0) {
+                builder.append("\n");
+            }
+        } return builder.toString();
     }
 
-    private Collection<Piece> writeActivePieces(final List<Tile> gameBoard, final Alliance alliance) {
+
+    //This for loop describes all legal moves for starting board
+    private Collection<Move> writeLegalMoves(Collection<Piece> pieces) {
+        final List<Move> legalMoves = new ArrayList<>();
+        for (final Piece piece : pieces) {
+            legalMoves.addAll(piece.writeLegalMoves(this));
+        }
+        return ImmutableList.copyOf(legalMoves);
+    }
+    // This part of code describes all and return all pieces, which stay on the piece and their alliance
+    private static Collection<Piece> writeActivePieces(final List<Tile> gameBoard, final Alliance alliance) {
 
         final List<Piece> activePieces = new ArrayList<>();
         for (final Tile tile: gameBoard) {
             if (tile.IsTileOccupied()) {
                 final Piece piece = tile.getPiece();
-                if (piece.getPieceAlliance() == alliance) {
+                if (piece.getPieceTeam() == alliance) {
                     activePieces.add(piece);
                 }
             }
@@ -36,12 +61,12 @@ public class Board {
     }
 
     public Tile getTile(final int tileCoordinate) {
-        return getTile(tileCoordinate);
+        return gameBoard.get(tileCoordinate);
     }
     //In this for loop, i am going to connect tile with identification(for every tile unique identification)
     private static List<Tile> createGameBoard(final Builder builder) {
-        final Tile[] tiles = new Tile[BoardUtils.NUM_TILES];
-        for (int i = 0; i < BoardUtils.NUM_TILES; i ++) {
+        final Tile[] tiles = new Tile[BoardUtils.TILES];
+        for (int i = 0; i < BoardUtils.TILES; i ++) {
             tiles[i] = Tile.createTile(i, builder.boardConfig.get(i));
         }
         return ImmutableList.copyOf(tiles);
@@ -89,12 +114,13 @@ public class Board {
         return builder.build();
     }
 
-//It will be a builder of gameboard; Here i have method for person who makes moves and for pieces on this board
+//It will be a builder of gameboard;
     public static class Builder {
         Map<Integer, Piece> boardConfig;
         Alliance nextMoveMaker;
 
         public Builder() {
+            this.boardConfig = new HashMap<>();
         }
 
         public Builder setPiece(final Piece piece) {

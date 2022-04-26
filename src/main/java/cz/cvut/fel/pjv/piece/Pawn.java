@@ -25,45 +25,49 @@ public class Pawn extends Piece {
 
         for (final int currentCandidateOffset : POSSIBLE_MOVE_COORDINATES) {
 
-            final int possibleCoordinate = this.piecePosition + (this.pieceAlliance.getDirection() * currentCandidateOffset);
+            final int possibleCoordinate = this.piecePosition + (this.pieceTeam.getDirection() * currentCandidateOffset);
 
             if(!BoardUtils.isValidTileCoordinate(possibleCoordinate)) {
                 continue;
             }
             if(currentCandidateOffset == 8 && board.getTile(possibleCoordinate).IsTileOccupied()) {
                 //finish this work(deal with promotion!!!!
-                legalMoves.add(new Move.MajorMove(board, this, possibleCoordinate));
+                legalMoves.add(new Move.MainMove(board, this, possibleCoordinate));
             } else if(currentCandidateOffset == 16 && this.isFirstMove() &&
-                    (BoardUtils.SECOND_ROW[this.piecePosition] && this.getPieceAlliance().isBlack()) ||
-                    (BoardUtils.SEVENTH_ROW[this.piecePosition] && this.getPieceAlliance().isWhite())) {
-                final int behindPossibleCoordinate = this.piecePosition + (this.pieceAlliance.getDirection() * 8);
+                    (BoardUtils.SECOND_ROW[this.piecePosition] && this.getPieceTeam().isBlack()) ||
+                    (BoardUtils.SEVENTH_ROW[this.piecePosition] && this.getPieceTeam().isWhite())) {
+                final int behindPossibleCoordinate = this.piecePosition + (this.pieceTeam.getDirection() * 8);
                 if(!board.getTile(behindPossibleCoordinate).IsTileOccupied() &&
                         !board.getTile(possibleCoordinate).IsTileOccupied()) ;
-                legalMoves.add(new Move.MajorMove(board, this, possibleCoordinate));
+                legalMoves.add(new Move.MainMove(board, this, possibleCoordinate));
             //Here I have recorded exceptions for black pawns, namely on the edges of the chessboard.
             }else if(currentCandidateOffset == 7 &&
-                    !((BoardUtils.EIGTH_COLUM[this.piecePosition] && this.pieceAlliance.isWhite() ||
-                    (BoardUtils.FIRST_COLUM[this.piecePosition] && this.pieceAlliance.isBlack())))) {
+                    !((BoardUtils.EIGHT_COLUM[this.piecePosition] && this.pieceTeam.isWhite() ||
+                    (BoardUtils.FIRST_COLUM[this.piecePosition] && this.pieceTeam.isBlack())))) {
                 if(board.getTile(possibleCoordinate).IsTileOccupied()) {
                     final Piece pieceOnCandidate = board.getTile(possibleCoordinate).getPiece();
-                    if(this.pieceAlliance != pieceOnCandidate.getPieceAlliance()){
+                    if(this.pieceTeam != pieceOnCandidate.getPieceTeam()){
                         //Finish this
-                        legalMoves.add(new Move.MajorMove(board, this, possibleCoordinate));
+                        legalMoves.add(new Move.MainMove(board, this, possibleCoordinate));
                     }
                 }
             //Here I have recorded exceptions for white pawns, namely on the edges of the chessboard.
             }else if(currentCandidateOffset == 9 &&
-                    !((BoardUtils.FIRST_COLUM[this.piecePosition] && this.pieceAlliance.isWhite() ||
-                            (BoardUtils.EIGTH_COLUM[this.piecePosition] && this.pieceAlliance.isBlack())))) {
+                    !((BoardUtils.FIRST_COLUM[this.piecePosition] && this.pieceTeam.isWhite() ||
+                            (BoardUtils.EIGHT_COLUM[this.piecePosition] && this.pieceTeam.isBlack())))) {
                 if(board.getTile(possibleCoordinate).IsTileOccupied()) {
                     final Piece pieceOnCandidate = board.getTile(possibleCoordinate).getPiece();
-                    if(this.pieceAlliance != pieceOnCandidate.getPieceAlliance()){
+                    if(this.pieceTeam != pieceOnCandidate.getPieceTeam()){
                         //Finish this
-                        legalMoves.add(new Move.MajorMove(board, this, possibleCoordinate));
+                        legalMoves.add(new Move.MainMove(board, this, possibleCoordinate));
                     }
                 }
             }
         }
         return ImmutableList.copyOf(legalMoves);
+    }
+    @Override
+    public String toString() {
+        return PieceType.PAWN.toString();
     }
 }

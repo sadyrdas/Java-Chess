@@ -42,12 +42,12 @@ public class Knight extends Piece {
                 }
 
                 final Tile possibleCoordinateTile = board.getTile(possibleCoordinate);
-                if (possibleCoordinateTile.IsTileOccupied()) {
-                    legalMoves.add(new MajorMove(board, this, possibleCoordinate));
+                if (!possibleCoordinateTile.IsTileOccupied()) {
+                    legalMoves.add(new MainMove(board, this, possibleCoordinate));
                 } else {
                     final Piece pieceAtDestination = possibleCoordinateTile.getPiece();
-                    final Alliance pieceAlliance = pieceAtDestination.getPieceAlliance();
-                    if (this.pieceAlliance != pieceAlliance) {
+                    final Alliance pieceAlliance = pieceAtDestination.getPieceTeam();
+                    if (this.pieceTeam != pieceAlliance) {
                         legalMoves.add(new AttackMove(board, this, possibleCoordinate, pieceAtDestination));
                     }
                 }
@@ -55,6 +55,12 @@ public class Knight extends Piece {
         }
         return ImmutableList.copyOf(legalMoves);
     }
+
+    @Override
+    public String toString() {
+        return PieceType.KNIGHT.toString();
+    }
+
 // Here I have the exceptions that are made when moving the stove to a certain tile.
     private static boolean IsFirstColumExclusion(final int currentPosition, final int candidateOffset) {
         return BoardUtils.FIRST_COLUM[currentPosition] && (candidateOffset == -17 || candidateOffset == -10 ||
@@ -71,7 +77,7 @@ public class Knight extends Piece {
     }
 
     private static boolean IsEightColumExclusion(final int currentPosition, final int candidateOffset) {
-        return BoardUtils.EIGTH_COLUM[currentPosition] && (candidateOffset == -15 || candidateOffset == -6 ||
+        return BoardUtils.EIGHT_COLUM[currentPosition] && (candidateOffset == -15 || candidateOffset == -6 ||
                 candidateOffset == 10 || candidateOffset == 17);
     }
 

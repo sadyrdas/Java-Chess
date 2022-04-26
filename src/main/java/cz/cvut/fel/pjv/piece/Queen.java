@@ -34,12 +34,12 @@ public class Queen extends Piece{
                 possibleCoordinate += candidateCoordinateOffset;
                 if (BoardUtils.isValidTileCoordinate(possibleCoordinate)) {
                     final Tile possibleCoordinateTile = board.getTile(possibleCoordinate);
-                    if (possibleCoordinateTile.IsTileOccupied()) {
-                        legalMoves.add(new Move.MajorMove(board, this, possibleCoordinate));
+                    if (!possibleCoordinateTile.IsTileOccupied()) {
+                        legalMoves.add(new Move.MainMove(board, this, possibleCoordinate));
                     } else {
                         final Piece pieceAtDestination = possibleCoordinateTile.getPiece();
-                        final Alliance pieceAlliance = pieceAtDestination.getPieceAlliance();
-                        if (this.pieceAlliance != pieceAlliance) {
+                        final Alliance pieceAlliance = pieceAtDestination.getPieceTeam();
+                        if (this.pieceTeam != pieceAlliance) {
                             legalMoves.add(new Move.AttackMove(board, this, possibleCoordinate, pieceAtDestination));
                         }
                         break;
@@ -49,13 +49,19 @@ public class Queen extends Piece{
         }
         return ImmutableList.copyOf(legalMoves);
     }
+
+    @Override
+    public String toString() {
+        return PieceType.QUEEN.toString();
+    }
+
     //Here I have prescribed exceptions for the queen's moves.
     private static boolean isFirstColumnExclusion(final int currentPosition, final int candidateOffSEt) {
         return BoardUtils.FIRST_COLUM[currentPosition] && (candidateOffSEt == -1 || currentPosition == -9 || candidateOffSEt == 7);
     }
 
     private static boolean isEigthColumnExclusion(final int currentPosition, final int candidateOffSEt) {
-        return BoardUtils.EIGTH_COLUM[currentPosition] && (currentPosition == -7 || candidateOffSEt == 1 || candidateOffSEt == 9);
+        return BoardUtils.EIGHT_COLUM[currentPosition] && (currentPosition == -7 || candidateOffSEt == 1 || candidateOffSEt == 9);
 
     }
 }

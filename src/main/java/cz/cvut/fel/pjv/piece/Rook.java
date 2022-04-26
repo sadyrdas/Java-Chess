@@ -35,12 +35,12 @@ public class Rook extends Piece{
                 possibleCoordinate += candidateCoordinateOffset;
                 if (BoardUtils.isValidTileCoordinate(possibleCoordinate)) {
                     final Tile possibleCoordinateTile = board.getTile(possibleCoordinate);
-                    if (possibleCoordinateTile.IsTileOccupied()) {
-                        legalMoves.add(new Move.MajorMove(board, this, possibleCoordinate));
+                    if (!possibleCoordinateTile.IsTileOccupied()) {
+                        legalMoves.add(new Move.MainMove(board, this, possibleCoordinate));
                     } else {
                         final Piece pieceAtDestination = possibleCoordinateTile.getPiece();
-                        final Alliance pieceAlliance = pieceAtDestination.getPieceAlliance();
-                        if (this.pieceAlliance != pieceAlliance) {
+                        final Alliance pieceAlliance = pieceAtDestination.getPieceTeam();
+                        if (this.pieceTeam != pieceAlliance) {
                             legalMoves.add(new Move.AttackMove(board, this, possibleCoordinate, pieceAtDestination));
                         }
                         break;
@@ -50,13 +50,19 @@ public class Rook extends Piece{
         }
         return ImmutableList.copyOf(legalMoves);
     }
+
+    @Override
+    public String toString() {
+        return PieceType.ROOK.toString();
+    }
+
     //Here I have prescribed exceptions for the rook's moves.
     private static boolean isFirstColumnExclusion(final int currentPosition, final int candidateOffSEt) {
         return BoardUtils.FIRST_COLUM[currentPosition] && (currentPosition == -1);
     }
 
     private static boolean isEigthColumnExclusion(final int currentPosition, final int candidateOffSEt) {
-        return BoardUtils.EIGTH_COLUM[currentPosition] && (currentPosition == -1);
+        return BoardUtils.EIGHT_COLUM[currentPosition] && (currentPosition == -1);
 
     }
 }
