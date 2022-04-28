@@ -13,4 +13,8 @@ public class MoveTransition {
         this.moveStatus = moveStatus;
         this.move = move;
     }
+
+    public MoveStatus getMoveStatus() {
+        return this.moveStatus;
+    }
 }

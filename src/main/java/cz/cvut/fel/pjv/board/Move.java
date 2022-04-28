@@ -34,4 +34,8 @@ public abstract class Move {
         }
     }
 
+    public int getDestination() {
+        return this.destinationCoordinate;
+    }
+
 }
