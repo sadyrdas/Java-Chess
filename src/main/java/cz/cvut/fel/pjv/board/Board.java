@@ -3,6 +3,8 @@ package cz.cvut.fel.pjv.board;
 import com.google.common.collect.ImmutableList;
 import cz.cvut.fel.pjv.TEAM;
 import cz.cvut.fel.pjv.piece.*;
+import cz.cvut.fel.pjv.player.BlackPlayer;
+import cz.cvut.fel.pjv.player.WhitePlayer;
 
 import java.util.*;
 
@@ -12,6 +14,8 @@ public class Board {
     private final List<Tile> gameBoard;
     private final Collection<Piece> whitePieces;
     private final Collection<Piece> blackPieces;
+    private final WhitePlayer whitePlayer;
+    private final BlackPlayer blackPlayer;
 
     private Board(Builder builder) {
         this.gameBoard = createGameBoard(builder);
@@ -21,6 +25,8 @@ public class Board {
         final Collection<Move> whiteStandardLegalMoves = writeLegalMoves(this.whitePieces);
         final Collection<Move> blackStandardLegalMoves = writeLegalMoves(this.blackPieces);
 
+        this.whitePlayer = new WhitePlayer(this, whiteStandardLegalMoves, blackStandardLegalMoves);
+        this.blackPlayer = new BlackPlayer(this, whiteStandardLegalMoves, blackStandardLegalMoves);
     }
 // this method will print board in text show ASCII
     @Override
@@ -35,6 +41,12 @@ public class Board {
         } return builder.toString();
     }
 
+    public Collection<Piece> getWhitePieces() {
+        return this.whitePieces;
+    }
+    public Collection<Piece> getBlackPieces() {
+        return this.blackPieces;
+    }
 
     //This for loop describes all legal moves for starting board
     private Collection<Move> writeLegalMoves(Collection<Piece> pieces) {

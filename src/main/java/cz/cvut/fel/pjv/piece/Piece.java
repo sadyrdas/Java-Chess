@@ -37,12 +37,42 @@ public abstract class Piece {
 
     public enum PieceType {
 
-        PAWN("p"),
-        KNIGHT("k"),
-        BISHOP("b"),
-        ROOK("r"),
-        QUEEN("q"),
-        KING("k");
+        PAWN("p"){
+            @Override
+            public boolean isKing() {
+                return false;
+            }
+        },
+        KNIGHT("k") {
+            @Override
+            public boolean isKing() {
+                return false;
+            }
+        },
+        BISHOP("b") {
+            @Override
+            public boolean isKing() {
+                return false;
+            }
+        },
+        ROOK("r") {
+            @Override
+            public boolean isKing() {
+                return false;
+            }
+        },
+        QUEEN("q") {
+            @Override
+            public boolean isKing() {
+                return false;
+            }
+        },
+        KING("k") {
+            @Override
+            public boolean isKing() {
+                return true;
+            }
+        };
 
         private String pieceName;
         PieceType(final String pieceName) {
