@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import cz.cvut.fel.pjv.TEAM;
 import cz.cvut.fel.pjv.piece.*;
 import cz.cvut.fel.pjv.player.BlackPlayer;
+import cz.cvut.fel.pjv.player.Player;
 import cz.cvut.fel.pjv.player.WhitePlayer;
 
 import java.util.*;
@@ -46,6 +47,14 @@ public class Board {
     }
     public Collection<Piece> getBlackPieces() {
         return this.blackPieces;
+    }
+
+    public Player whitePlayer() {
+        return this.whitePlayer;
+    }
+
+    public Player blackPlayer() {
+        return this.blackPlayer;
     }
 
     //This for loop describes all legal moves for starting board

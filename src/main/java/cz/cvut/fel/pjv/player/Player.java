@@ -1,5 +1,6 @@
 package cz.cvut.fel.pjv.player;
-
+//this class describes Player, his king and legal moves, and his opponent's legal moves;
+import cz.cvut.fel.pjv.TEAM;
 import cz.cvut.fel.pjv.board.Board;
 import cz.cvut.fel.pjv.board.Move;
 import cz.cvut.fel.pjv.piece.King;
@@ -26,6 +27,30 @@ public abstract class Player {
         }
         throw new RuntimeException("Not here, NOT VALID BOARD!");
     }
+    //There will be implemented all moves, which connected with Players;
+    public boolean isInCheck() {
+        return false;
+    }
 
+    public boolean isInCheckMate() {
+        return false;
+    }
+
+    public boolean isInMate() {
+        return false;
+    }
+
+    public boolean isSuperPiece() {
+        return false;
+    }
+    public boolean isMoveLegal(final Move move) {
+        return this.legalMoves.contains(move);
+    }
+
+    public MoveTransition makeMove(final Move move) {
+        return null;
+    }
     public abstract Collection<Piece> getActivePieces();
+    public abstract TEAM getTeam();
+    public abstract Player getOpponent();
 }
