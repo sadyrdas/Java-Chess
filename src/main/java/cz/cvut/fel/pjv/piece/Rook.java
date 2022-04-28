@@ -1,7 +1,7 @@
 package cz.cvut.fel.pjv.piece;
 
 import com.google.common.collect.ImmutableList;
-import cz.cvut.fel.pjv.Alliance;
+import cz.cvut.fel.pjv.TEAM;
 import cz.cvut.fel.pjv.board.Board;
 import cz.cvut.fel.pjv.board.BoardUtils;
 import cz.cvut.fel.pjv.board.Move;
@@ -16,8 +16,8 @@ public class Rook extends Piece{
     private final static int[] POSSIBLE_MOVE_VECTOR_COORDINATES = {-8, -1, 1, 8};
 
 
-    public Rook(final Alliance pieceAlliance,final int piecePosition) {
-        super(piecePosition, pieceAlliance);
+    public Rook(final TEAM pieceTEAM, final int piecePosition) {
+        super(piecePosition, pieceTEAM, PieceType.ROOK);
     }
     ////In this part of the code, I have spelled out all the legal moves of the rook.
     @Override
@@ -39,8 +39,8 @@ public class Rook extends Piece{
                         legalMoves.add(new Move.MainMove(board, this, possibleCoordinate));
                     } else {
                         final Piece pieceAtDestination = possibleCoordinateTile.getPiece();
-                        final Alliance pieceAlliance = pieceAtDestination.getPieceTeam();
-                        if (this.pieceTeam != pieceAlliance) {
+                        final TEAM pieceTEAM = pieceAtDestination.getPieceTeam();
+                        if (this.pieceTeam != pieceTEAM) {
                             legalMoves.add(new Move.AttackMove(board, this, possibleCoordinate, pieceAtDestination));
                         }
                         break;

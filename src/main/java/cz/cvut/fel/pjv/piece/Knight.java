@@ -1,7 +1,7 @@
 package cz.cvut.fel.pjv.piece;
 
 import com.google.common.collect.ImmutableList;
-import cz.cvut.fel.pjv.Alliance;
+import cz.cvut.fel.pjv.TEAM;
 import cz.cvut.fel.pjv.board.Board;
 import cz.cvut.fel.pjv.board.BoardUtils;
 import cz.cvut.fel.pjv.board.Move;
@@ -18,8 +18,8 @@ public class Knight extends Piece {
 
     private final static int[] POSSIBLE_MOVE_COORDINATES = {-17, -15, -10, -6, 6, 10, 15, 17};
 
-    public Knight(final Alliance pieceAlliance, final int piecePosition) {
-        super(piecePosition, pieceAlliance);
+    public Knight(final TEAM pieceTEAM, final int piecePosition) {
+        super(piecePosition, pieceTEAM, PieceType.KNIGHT);
     }
 
     //First, I identified all the possible movements of the horse as a list
@@ -46,8 +46,8 @@ public class Knight extends Piece {
                     legalMoves.add(new MainMove(board, this, possibleCoordinate));
                 } else {
                     final Piece pieceAtDestination = possibleCoordinateTile.getPiece();
-                    final Alliance pieceAlliance = pieceAtDestination.getPieceTeam();
-                    if (this.pieceTeam != pieceAlliance) {
+                    final TEAM pieceTEAM = pieceAtDestination.getPieceTeam();
+                    if (this.pieceTeam != pieceTEAM) {
                         legalMoves.add(new AttackMove(board, this, possibleCoordinate, pieceAtDestination));
                     }
                 }

@@ -1,7 +1,7 @@
 package cz.cvut.fel.pjv.piece;
 
 import com.google.common.collect.ImmutableList;
-import cz.cvut.fel.pjv.Alliance;
+import cz.cvut.fel.pjv.TEAM;
 import cz.cvut.fel.pjv.board.Board;
 import cz.cvut.fel.pjv.board.BoardUtils;
 import cz.cvut.fel.pjv.board.Move;
@@ -14,8 +14,8 @@ public class Pawn extends Piece {
 
     private final static int[] POSSIBLE_MOVE_COORDINATES = {8, 16, 7, 9};
 
-    public Pawn(final Alliance pieceAlliance, final int piecePosition) {
-        super(piecePosition, pieceAlliance);
+    public Pawn(final TEAM pieceTEAM, final int piecePosition) {
+        super(piecePosition, pieceTEAM, PieceType.PAWN);
     }
     //First of all, I prescribed legal pawn moves. 1) Non-attacking moves, 2) Jumping over one tile.
     @Override

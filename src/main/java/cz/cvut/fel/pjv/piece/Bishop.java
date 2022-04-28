@@ -1,7 +1,7 @@
 package cz.cvut.fel.pjv.piece;
 
 import com.google.common.collect.ImmutableList;
-import cz.cvut.fel.pjv.Alliance;
+import cz.cvut.fel.pjv.TEAM;
 import cz.cvut.fel.pjv.board.Board;
 import cz.cvut.fel.pjv.board.BoardUtils;
 import cz.cvut.fel.pjv.board.Move;
@@ -15,8 +15,8 @@ public class Bishop extends Piece {
 
     private final static int[] POSSIBLE_MOVE_VECTOR_COORDINATES = {-9, -7, 7, 9};
 
-    public Bishop(final Alliance pieceAlliance, final int piecePosition) {
-        super(piecePosition, pieceAlliance);
+    public Bishop(final TEAM pieceTEAM, final int piecePosition) {
+        super(piecePosition, pieceTEAM, PieceType.BISHOP);
     }
 
     //First, I identified all possible bispkup moves as a list
@@ -41,8 +41,8 @@ public class Bishop extends Piece {
                         legalMoves.add(new Move.MainMove(board, this, possibleCoordinate));
                     } else {
                         final Piece pieceAtDestination = possibleCoordinateTile.getPiece();
-                        final Alliance pieceAlliance = pieceAtDestination.getPieceTeam();
-                        if (this.pieceTeam != pieceAlliance) {
+                        final TEAM pieceTEAM = pieceAtDestination.getPieceTeam();
+                        if (this.pieceTeam != pieceTEAM) {
                             legalMoves.add(new Move.AttackMove(board, this, possibleCoordinate, pieceAtDestination));
                         }
                         break;
