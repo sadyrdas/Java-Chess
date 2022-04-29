@@ -6,6 +6,18 @@ public enum MoveStatus {
         boolean isDIED() {
             return true;
         }
+    },
+    ILLEGAL_MOVES {
+        @Override
+        boolean isDIED() {
+            return false;
+        }
+    },
+    PLAYER_STILL_IN_CHECK {
+        @Override
+        boolean isDIED() {
+            return false;
+        }
     };
 
     abstract boolean isDIED();

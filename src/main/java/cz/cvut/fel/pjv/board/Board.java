@@ -17,6 +17,7 @@ public class Board {
     private final Collection<Piece> blackPieces;
     private final WhitePlayer whitePlayer;
     private final BlackPlayer blackPlayer;
+    private final Player currentPlayer;
 
     private Board(Builder builder) {
         this.gameBoard = createGameBoard(builder);
@@ -28,6 +29,9 @@ public class Board {
 
         this.whitePlayer = new WhitePlayer(this, whiteStandardLegalMoves, blackStandardLegalMoves);
         this.blackPlayer = new BlackPlayer(this, whiteStandardLegalMoves, blackStandardLegalMoves);
+
+        //Here i need finish method for choosing Team for currentPlayer;
+        this.currentPlayer = null;
     }
 // this method will print board in text show ASCII
     @Override
@@ -49,12 +53,16 @@ public class Board {
         return this.blackPieces;
     }
 
-    public Player whitePlayer() {
+    public Player getWhitePlayer() {
         return this.whitePlayer;
     }
 
-    public Player blackPlayer() {
+    public Player getBlackPlayer() {
         return this.blackPlayer;
+    }
+
+    public Player currentPlayer() {
+        return this.currentPlayer;
     }
 
     //This for loop describes all legal moves for starting board

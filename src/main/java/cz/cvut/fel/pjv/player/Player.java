@@ -35,6 +35,14 @@ public abstract class Player {
         return ImmutableList.copyOf(attackMoves);
     }
 
+    public King getPlayerKing() {
+        return this.playerKing;
+    }
+
+    public Collection<Move> getLegalMoves() {
+        return this.legalMoves;
+    }
+
     private King THEKING() {
         for (final Piece piece: getActivePieces()) {
             if(piece.getPieceType().isKing()){
@@ -77,7 +85,18 @@ public abstract class Player {
     }
 
     public MoveTransition makeMove(final Move move) {
-        return null;
+        if(!isMoveLegal(move)) {
+            return new MoveTransition(this.board, MoveStatus.ILLEGAL_MOVES , move);
+        }
+        final Board transitionBoard = move.execution();
+
+        final Collection<Move> kingAttacks = Player.writeAttacksOnTile(transitionBoard.currentPlayer().getOpponent().getPlayerKing().getPiecePosition(), transitionBoard.currentPlayer().getLegalMoves());
+
+        if(!kingAttacks.isEmpty()) {
+            return new MoveTransition(this.board, MoveStatus.PLAYER_STILL_IN_CHECK, move);
+        }
+
+        return new MoveTransition(transitionBoard, MoveStatus.DIED, move);
     }
     public abstract Collection<Piece> getActivePieces();
     public abstract TEAM getTeam();
