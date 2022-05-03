@@ -15,19 +15,29 @@ public abstract class Move {
         this.movedPiece = piece;
         this.destinationCoordinate = destinationCoordinate;
     }
-//Finish later
-    public abstract Board execution();
+
+    //this describes build of new board in the old board for all pieces, which are NOT MOVED!!!
+    public Board execution() {
+        final Board.Builder builder = new Board.Builder();
+        for (final Piece piece : this.board.currentPlayer().getActivePieces()) {
+            //finished equals methods for pieces!
+            if (!this.movedPiece.equals(piece)) {
+                builder.setPiece(piece);
+            }
+        }
+        for (final Piece piece : this.board.currentPlayer().getOpponent().getActivePieces()) {
+            builder.setPiece(piece);
+        }
+        builder.setPiece(this.movedPiece.movePiece(this));
+        builder.setMoveMaker(this.board.currentPlayer().getOpponent().getTeam());
+        return builder.build();
+    }
 
     public static final class MainMove extends Move {
 
         public MainMove(final Board board, final Piece piece,
                         final int destinationCoordinate) {
             super(board, piece, destinationCoordinate);
-        }
-
-        @Override
-        public Board execution() {
-            return null;
         }
     }
     public static final class AttackMove extends Move {
@@ -48,6 +58,10 @@ public abstract class Move {
 
     public int getDestination() {
         return this.destinationCoordinate;
+    }
+
+    public Piece getMovedPiece() {
+        return this.movedPiece;
     }
 
 }

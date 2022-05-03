@@ -19,7 +19,7 @@ public class Board {
     private final BlackPlayer blackPlayer;
     private final Player currentPlayer;
 
-    private Board(Builder builder) {
+    private Board(final Builder builder) {
         this.gameBoard = createGameBoard(builder);
         this.whitePieces = writeActivePieces(this.gameBoard, TEAM.WHITE);
         this.blackPieces = writeActivePieces(this.gameBoard, TEAM.BLACK);
@@ -31,7 +31,7 @@ public class Board {
         this.blackPlayer = new BlackPlayer(this, whiteStandardLegalMoves, blackStandardLegalMoves);
 
         //Here i need finish method for choosing Team for currentPlayer;
-        this.currentPlayer = null;
+        this.currentPlayer = builder.nextMoveMaker.pickplayer(this.whitePlayer, this.blackPlayer);
     }
 // this method will print board in text show ASCII
     @Override
