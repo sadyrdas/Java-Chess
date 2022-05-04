@@ -28,4 +28,9 @@ public class BlackPlayer extends Player{
     public Player getOpponent() {
         return this.board.getWhitePlayer();
     }
+
+    @Override
+    protected Collection<Move> writeKingCastles(Collection<Move> playerLegals, Collection<Move> opponentLegals) {
+        return null;
+    }
 }

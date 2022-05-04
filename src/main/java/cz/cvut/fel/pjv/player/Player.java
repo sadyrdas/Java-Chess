@@ -7,7 +7,6 @@ import cz.cvut.fel.pjv.board.Move;
 import cz.cvut.fel.pjv.piece.King;
 import cz.cvut.fel.pjv.piece.Piece;
 
-import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -25,7 +24,7 @@ public abstract class Player {
 
     }
 
-    private static Collection<Move> writeAttacksOnTile(int piecePosition, Collection<Move> moves) {
+    protected static Collection<Move> writeAttacksOnTile(int piecePosition, Collection<Move> moves) {
         final List<Move> attackMoves = new ArrayList<>();
         for(final Move move : moves) {
             if (piecePosition == move.getDestination()) {
@@ -101,4 +100,5 @@ public abstract class Player {
     public abstract Collection<Piece> getActivePieces();
     public abstract TEAM getTeam();
     public abstract Player getOpponent();
+    protected abstract Collection<Move> writeKingCastles(Collection<Move> playerLegals, Collection<Move> opponentLegals);
 }
