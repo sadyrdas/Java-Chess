@@ -1,6 +1,7 @@
 package cz.cvut.fel.pjv.board;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import cz.cvut.fel.pjv.TEAM;
 import cz.cvut.fel.pjv.piece.*;
 import cz.cvut.fel.pjv.player.BlackPlayer;
@@ -143,10 +144,15 @@ public class Board {
         return builder.build();
     }
 
-//It will be a builder of gameboard;
+    public Iterable<Move> getAllLegalMoves() {
+        return Iterables.unmodifiableIterable(Iterables.concat(this.whitePlayer.getLegalMoves(), this.blackPlayer.getLegalMoves()));
+    }
+
+    //It will be a builder of gameboard;
     public static class Builder {
         Map<Integer, Piece> boardConfig;
         TEAM nextMoveMaker;
+        Pawn enPassantPawn;
 
         public Builder() {
             this.boardConfig = new HashMap<>();
@@ -166,5 +172,8 @@ public class Board {
             return new Board(this);
         }
 
+        public void setinPassantPiece(Pawn movedPawn) {
+            this.enPassantPawn = enPassantPawn;
+        }
     }
 }
