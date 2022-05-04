@@ -1,6 +1,7 @@
 package cz.cvut.fel.pjv.player;
 //this class describes Player, his king and legal moves, and his opponent's legal moves;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import cz.cvut.fel.pjv.TEAM;
 import cz.cvut.fel.pjv.board.Board;
 import cz.cvut.fel.pjv.board.Move;
@@ -19,7 +20,7 @@ public abstract class Player {
     Player(final Board board,final Collection<Move> legalMoves, final Collection<Move> opponentMoves){
         this.board =  board;
         this.playerKing = THEKING();
-        this.legalMoves = legalMoves;
+        this.legalMoves = ImmutableList.copyOf(Iterables.concat(legalMoves, writeKingCastles(legalMoves, opponentMoves)));
         this.isInCheck = !Player.writeAttacksOnTile(this.playerKing.getPiecePosition(), opponentMoves).isEmpty();
 
     }

@@ -28,6 +28,11 @@ public abstract class Tile {
     public abstract  boolean IsTileOccupied();
 
     public abstract Piece getPiece();
+
+    public int getTileCoordinate() {
+        return this.tileCoordinate;
+    }
+
     //This function describes all empty tiles.
     public static final class EmptyTile extends Tile {
         EmptyTile(final int coordinate) {
