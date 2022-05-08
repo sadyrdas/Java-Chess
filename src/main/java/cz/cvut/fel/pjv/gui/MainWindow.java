@@ -8,6 +8,8 @@ import java.util.List;
 
 
 public class MainWindow {
+    private final Color lightTileColor = Color.decode("#FFFFFF");
+    private final Color darkTileColor = Color.decode("#000000");
     private final BoardPanel boardpanel;
     private JFrame windowForGame;
     public MainWindow() {
@@ -21,6 +23,7 @@ public class MainWindow {
         this.windowForGame.add(boardpanel, BorderLayout.CENTER);
 
     }
+    // this class describes chess board for game
     private class BoardPanel extends JPanel {
         final List<TilePanel> boardTiles;
 
@@ -36,6 +39,7 @@ public class MainWindow {
             validate();
         }
     }
+    //this class describes tile on the chess board
     private class TilePanel extends JPanel{
         private final int IdOfTile;
 
@@ -48,6 +52,14 @@ public class MainWindow {
         }
 
         private void makeTileColor() {
+            if(BoardUtils.FIRST_ROW[this.IdOfTile] || BoardUtils.THIRD_ROW[this.IdOfTile]
+            || BoardUtils.FIFTH_ROW[this.IdOfTile] || BoardUtils.SEVENTH_ROW[this.IdOfTile]) {
+                setBackground(this.IdOfTile % 2 == 0 ? lightTileColor : darkTileColor);
+            }
+            if(BoardUtils.SECOND_ROW[this.IdOfTile] ||BoardUtils.FOURTH_ROW[this.IdOfTile]
+                || BoardUtils.SIXTH_ROW[this.IdOfTile] || BoardUtils.EIGHT_ROW[this.IdOfTile]) {
+                setBackground(this.IdOfTile % 2 != 0 ? lightTileColor : darkTileColor);
+            };
         }
     }
 }
