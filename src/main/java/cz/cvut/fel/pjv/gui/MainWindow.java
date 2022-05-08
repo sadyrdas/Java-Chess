@@ -1,8 +1,13 @@
 package cz.cvut.fel.pjv.gui;
+import cz.cvut.fel.pjv.board.Board;
 import cz.cvut.fel.pjv.board.BoardUtils;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +55,23 @@ public class MainWindow {
             makeTileColor();
             validate();
         }
+        private void makeTileImages(Board board) {
+            this.removeAll();
+            if(board.getTile(this.IdOfTile).IsTileOccupied()) {
+                String pieceIconPath = "";
+                try {
+                    final BufferedImage image =
+                            ImageIO.read(new File(pieceIconPath + board.getTile(this.IdOfTile).getPiece().getPieceTeam().toString().substring(0, 1) +
+                                    board.getTile(this.IdOfTile).getPiece().toString() + ".gif"));
+                    add(new JLabel(new ImageIcon(image)));
 
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
         private void makeTileColor() {
             if(BoardUtils.FIRST_ROW[this.IdOfTile] || BoardUtils.THIRD_ROW[this.IdOfTile]
             || BoardUtils.FIFTH_ROW[this.IdOfTile] || BoardUtils.SEVENTH_ROW[this.IdOfTile]) {

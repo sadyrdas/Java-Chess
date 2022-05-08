@@ -62,7 +62,10 @@ public class BlackPlayer extends Player{
                     !this.board.getTile(2).IsTileOccupied() &&
                     !this.board.getTile(3).IsTileOccupied()){
                 final Tile rookTile = this.board.getTile(0);
-                if (rookTile.IsTileOccupied() && rookTile.getPiece().isFirstMove()) {
+                if (rookTile.IsTileOccupied() && rookTile.getPiece().isFirstMove() &&
+                        Player.writeAttacksOnTile(2, opponentLegals).isEmpty() &&
+                        Player.writeAttacksOnTile(3, opponentLegals).isEmpty() &&
+                        rookTile.getPiece().getPieceType().isRook()) {
                     kingCastles.add(new QueenSideCastleMoves(this.board,
                             this.playerKing, 2,
                             (Rook)rookTile.getPiece(), rookTile.getTileCoordinate(), 3 ));
