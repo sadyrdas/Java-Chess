@@ -14,18 +14,23 @@ import java.util.List;
 
 public class MainWindow {
     private final Color lightTileColor = Color.decode("#FFFFFF");
-    private final Color darkTileColor = Color.decode("#000000");
+    private final Color darkTileColor = Color.decode("#560319");
+    private Board chessBoard;
+    private static String defaultPathForImagesOFPieces = "C:\\Users\\Acer\\IdeaProjects\\CHESS\\src\\main\\resources\\chessPieces\\";
+
     private final BoardPanel boardpanel;
     private JFrame windowForGame;
     public MainWindow() {
 
         this.windowForGame = new JFrame("Dastan's chess game");
-        this.windowForGame.setSize(800, 600);
+        this.windowForGame.setSize(600, 600);
         this.windowForGame.setLayout(new BorderLayout());
+        this.chessBoard = Board.createStandardBoard();
         this.windowForGame.setVisible(true);
         this.windowForGame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.boardpanel = new BoardPanel();
         this.windowForGame.add(boardpanel, BorderLayout.CENTER);
+
 
     }
     // this class describes chess board for game
@@ -40,7 +45,7 @@ public class MainWindow {
                 this.boardTiles.add(tilePanel);
                 add(tilePanel);
             }
-            setSize(500,400);
+            setSize(500,450);
             validate();
         }
     }
@@ -51,17 +56,17 @@ public class MainWindow {
         TilePanel(final BoardPanel boardPanel, final int IdOfTile) {
             super(new GridBagLayout());
             this.IdOfTile = IdOfTile;
-            setSize(15,15);
+            setSize(10,10);
             makeTileColor();
             validate();
+            makeTileImages(chessBoard);
         }
         private void makeTileImages(Board board) {
             this.removeAll();
             if(board.getTile(this.IdOfTile).IsTileOccupied()) {
-                String pieceIconPath = "";
                 try {
                     final BufferedImage image =
-                            ImageIO.read(new File(pieceIconPath + board.getTile(this.IdOfTile).getPiece().getPieceTeam().toString().substring(0, 1) +
+                            ImageIO.read(new File(defaultPathForImagesOFPieces + board.getTile(this.IdOfTile).getPiece().getPieceTeam().toString().substring(0, 1) +
                                     board.getTile(this.IdOfTile).getPiece().toString() + ".gif"));
                     add(new JLabel(new ImageIcon(image)));
 
