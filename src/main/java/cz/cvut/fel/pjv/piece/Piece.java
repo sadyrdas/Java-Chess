@@ -19,7 +19,7 @@ public abstract class Piece {
         this.piecePosition = piecePosition;
         //finish this work
         this.pieceType = pieceType;
-        this.isFirstMove = false;
+        this.isFirstMove = true;
         this.cachedHashCode = computeHashCode();
     }
     //This describes like piece = movedPiece
@@ -78,7 +78,7 @@ public abstract class Piece {
                 return false;
             }
         },
-        KNIGHT("k") {
+        KNIGHT("n") {
             @Override
             public boolean isKing() {
                 return false;

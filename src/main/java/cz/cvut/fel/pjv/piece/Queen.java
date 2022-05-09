@@ -62,11 +62,11 @@ public class Queen extends Piece{
 
     //Here I have prescribed exceptions for the queen's moves.
     private static boolean isFirstColumnExclusion(final int currentPosition, final int candidateOffSEt) {
-        return BoardUtils.FIRST_COLUM[currentPosition] && (candidateOffSEt == -1 || currentPosition == -9 || candidateOffSEt == 7);
+        return BoardUtils.FIRST_COLUM[currentPosition] && (candidateOffSEt == -1 || candidateOffSEt == -9 || candidateOffSEt == 7);
     }
 
     private static boolean isEigthColumnExclusion(final int currentPosition, final int candidateOffSEt) {
-        return BoardUtils.EIGHT_COLUM[currentPosition] && (currentPosition == -7 || candidateOffSEt == 1 || candidateOffSEt == 9);
+        return BoardUtils.EIGHT_COLUM[currentPosition] && (candidateOffSEt == -7 || candidateOffSEt == 1 || candidateOffSEt == 9);
 
     }
 }

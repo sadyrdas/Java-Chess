@@ -33,7 +33,7 @@ public abstract class Tile {
         return this.tileCoordinate;
     }
 
-    //This function describes all empty tiles.
+    //This class describes all empty tiles.
     public static final class EmptyTile extends Tile {
         EmptyTile(final int coordinate) {
             super(coordinate);
@@ -54,7 +54,7 @@ public abstract class Tile {
             return null;
         }
     }
-    //This function describes all occupied tiles.
+    //This class describes all occupied tiles.
     public static final class OccupiedTile extends Tile {
         private final Piece pieceOnTile;
         OccupiedTile(int tileCoordinate, final Piece placeOnTile) {

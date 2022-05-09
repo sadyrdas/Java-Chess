@@ -63,11 +63,11 @@ public class Rook extends Piece{
 
     //Here I have prescribed exceptions for the rook's moves.
     private static boolean isFirstColumnExclusion(final int currentPosition, final int candidateOffSEt) {
-        return BoardUtils.FIRST_COLUM[currentPosition] && (currentPosition == -1);
+        return BoardUtils.FIRST_COLUM[currentPosition] && (candidateOffSEt == -1);
     }
 
     private static boolean isEigthColumnExclusion(final int currentPosition, final int candidateOffSEt) {
-        return BoardUtils.EIGHT_COLUM[currentPosition] && (currentPosition == -1);
+        return BoardUtils.EIGHT_COLUM[currentPosition] && (candidateOffSEt == -1);
 
     }
 }

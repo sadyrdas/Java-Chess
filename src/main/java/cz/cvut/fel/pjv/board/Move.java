@@ -13,6 +13,7 @@ public abstract class Move {
     final Piece movedPiece;
     final int destinationCoordinate;
 
+
     public static final Move NO_MOVE = new NoMoves();
 
     private Move(final Board board,
@@ -75,7 +76,6 @@ public abstract class Move {
     public Board execution() {
         final Builder builder = new Builder();
         for (final Piece piece : this.board.currentPlayer().getActivePieces()) {
-            //finished equals methods for pieces!
             if (!this.movedPiece.equals(piece)) {
                 builder.setPiece(piece);
             }

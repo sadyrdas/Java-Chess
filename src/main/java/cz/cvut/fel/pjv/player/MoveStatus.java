@@ -1,24 +1,24 @@
 package cz.cvut.fel.pjv.player;
 
 public enum MoveStatus {
-    DIED{
+    DID {
         @Override
-        boolean isDIED() {
+        public boolean isDID() {
             return true;
         }
     },
     ILLEGAL_MOVES {
         @Override
-        boolean isDIED() {
+        public boolean isDID() {
             return false;
         }
     },
     PLAYER_STILL_IN_CHECK {
         @Override
-        boolean isDIED() {
+        public boolean isDID() {
             return false;
         }
     };
 
-    abstract boolean isDIED();
+    public abstract boolean isDID();
 }

@@ -30,7 +30,7 @@ public class Pawn extends Piece {
             if(!BoardUtils.isValidTileCoordinate(possibleCoordinate)) {
                 continue;
             }
-            if(currentCandidateOffset == 8 && board.getTile(possibleCoordinate).IsTileOccupied()) {
+            if(currentCandidateOffset == 8 && !board.getTile(possibleCoordinate).IsTileOccupied()) {
                 //finish this work(deal with promotion!!!!
                 legalMoves.add(new Move.MainMove(board, this, possibleCoordinate));
             } else if(currentCandidateOffset == 16 && this.isFirstMove() &&
@@ -38,8 +38,9 @@ public class Pawn extends Piece {
                     (BoardUtils.SEVENTH_ROW[this.piecePosition] && this.getPieceTeam().isWhite())) {
                 final int behindPossibleCoordinate = this.piecePosition + (this.pieceTeam.getDirection() * 8);
                 if(!board.getTile(behindPossibleCoordinate).IsTileOccupied() &&
-                        !board.getTile(possibleCoordinate).IsTileOccupied()) ;
-                legalMoves.add(new Move.MainMove(board, this, possibleCoordinate));
+                        !board.getTile(possibleCoordinate).IsTileOccupied()) {
+                    legalMoves.add(new Move.MainMove(board, this, possibleCoordinate));
+                }
             //Here I have recorded exceptions for black pawns, namely on the edges of the chessboard.
             }else if(currentCandidateOffset == 7 &&
                     !((BoardUtils.EIGHT_COLUM[this.piecePosition] && this.pieceTeam.isWhite() ||

@@ -69,7 +69,7 @@ public abstract class Player {
     private boolean EscapeMoves() {
         for(final Move move : this.legalMoves) {
             final MoveTransition transition = makeMove(move);
-            if(transition.getMoveStatus().isDIED()){
+            if(transition.getMoveStatus().isDID()){
                 return true;
 
             }
@@ -96,7 +96,7 @@ public abstract class Player {
             return new MoveTransition(this.board, MoveStatus.PLAYER_STILL_IN_CHECK, move);
         }
 
-        return new MoveTransition(transitionBoard, MoveStatus.DIED, move);
+        return new MoveTransition(transitionBoard, MoveStatus.DID, move);
     }
     public abstract Collection<Piece> getActivePieces();
     public abstract TEAM getTeam();

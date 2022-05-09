@@ -1,21 +1,38 @@
 package cz.cvut.fel.pjv.gui;
+import com.google.common.collect.Lists;
 import cz.cvut.fel.pjv.board.Board;
 import cz.cvut.fel.pjv.board.BoardUtils;
+import cz.cvut.fel.pjv.board.Move;
+import cz.cvut.fel.pjv.board.Tile;
+import cz.cvut.fel.pjv.piece.Piece;
+import cz.cvut.fel.pjv.player.MoveTransition;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.swing.SwingUtilities.isLeftMouseButton;
+import static javax.swing.SwingUtilities.isRightMouseButton;
+
 
 public class MainWindow {
     private final Color lightTileColor = Color.decode("#FFFFFF");
     private final Color darkTileColor = Color.decode("#560319");
     private Board chessBoard;
+
+    private Tile originTile;
+    private Tile DestinationTile;
+    private Piece humanMovedPiece;
+
     private static String defaultPathForImagesOFPieces = "C:\\Users\\Acer\\IdeaProjects\\CHESS\\src\\main\\resources\\chessPieces\\";
 
     private final BoardPanel boardpanel;
@@ -23,32 +40,62 @@ public class MainWindow {
     public MainWindow() {
 
         this.windowForGame = new JFrame("Dastan's chess game");
-        this.windowForGame.setSize(600, 600);
         this.windowForGame.setLayout(new BorderLayout());
+        final JMenuBar MenuBar = createMenuBar();
+        this.windowForGame.setJMenuBar(MenuBar);
+        this.windowForGame.setSize(600, 600);
         this.chessBoard = Board.createStandardBoard();
-        this.windowForGame.setVisible(true);
-        this.windowForGame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.boardpanel = new BoardPanel();
         this.windowForGame.add(boardpanel, BorderLayout.CENTER);
-
+        this.windowForGame.setVisible(true);
 
     }
+    private JMenuBar createMenuBar() {
+        final JMenuBar MenuBar = new JMenuBar();
+        MenuBar.add(createFileMenuBar());
+        return MenuBar;
+    }
+    private JMenu createFileMenuBar() {
+        final JMenu file = new JMenu("File");
+        final JMenuItem exit = new JMenuItem("Exit");
+        exit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+        file.add(exit);
+        return file;
+    }
+
+
     // this class describes chess board for game
     private class BoardPanel extends JPanel {
         final List<TilePanel> boardTiles;
 
         BoardPanel() {
-            super(new GridLayout(8,8));
+            super(new GridLayout(8, 8));
             this.boardTiles = new ArrayList<>();
             for (int i = 0; i < BoardUtils.TILES; i++) {
                 final TilePanel tilePanel = new TilePanel(this, i);
                 this.boardTiles.add(tilePanel);
                 add(tilePanel);
             }
-            setSize(500,450);
+            setSize(500, 450);
             validate();
         }
+        public void makeBoard(final Board board) {
+            removeAll();
+            for (final TilePanel tilePanel: boardTiles) {
+                tilePanel.makeTile(board);
+                add(tilePanel);
+            }
+            validate();
+            repaint();
+        }
     }
+
+
     //this class describes tile on the chess board
     private class TilePanel extends JPanel{
         private final int IdOfTile;
@@ -57,11 +104,76 @@ public class MainWindow {
             super(new GridBagLayout());
             this.IdOfTile = IdOfTile;
             setSize(10,10);
-            makeTileColor();
             validate();
+            makeTileColor();
             makeTileImages(chessBoard);
+            addMouseListener(new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    //for example, when you have mistake click - it will cancel move.
+                    if(isRightMouseButton(e)) {
+                        originTile = null;
+                        DestinationTile = null;
+                        humanMovedPiece = null;
+                    }else if (isLeftMouseButton(e)) {
+                        if (originTile == null) {
+                            originTile = chessBoard.getTile(IdOfTile);
+                            humanMovedPiece = originTile.getPiece();
+                            if(humanMovedPiece == null) {
+                                originTile = null;
+                            }
+                        } else {
+                            DestinationTile = chessBoard.getTile(IdOfTile);
+                            final Move move = Move.MoveFactory.createMove(chessBoard, originTile.getTileCoordinate(), DestinationTile.getTileCoordinate());
+                            final MoveTransition transition = chessBoard.currentPlayer().makeMove(move);
+                            if (transition.getMoveStatus().isDID()) {
+                                chessBoard = transition.getTransitionBoard();
+                            }
+                            //That will not be pastmove+nextmove;
+                            originTile = null;
+                            DestinationTile = null;
+                            humanMovedPiece = null;
+                        }
+                        SwingUtilities.invokeLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                boardPanel.makeBoard(chessBoard);
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+
+                }
+            });
+
+            validate();
         }
-        private void makeTileImages(Board board) {
+        public void makeTile(final Board board) {
+            makeTileColor();
+            makeTileImages(board);
+            validate();
+            repaint();
+
+        }
+        private void makeTileImages(final Board board) {
             this.removeAll();
             if(board.getTile(this.IdOfTile).IsTileOccupied()) {
                 try {
