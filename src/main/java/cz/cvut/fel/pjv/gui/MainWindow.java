@@ -186,7 +186,6 @@ public class MainWindow {
         public boolean removeMove(final Move move) {
             return this.moves.remove(move);
         }
-
     }
 
 

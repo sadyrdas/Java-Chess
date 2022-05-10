@@ -25,7 +25,7 @@ public abstract class Move {
         this.destinationCoordinate = destinationCoordinate;
         this.isFirstMove = movedPiece.isFirstMove();
     }
-
+    //finish this
     private Move(final Board board, final int destinationCoordinate) {
         this.board = board;
         this.destinationCoordinate = destinationCoordinate;
