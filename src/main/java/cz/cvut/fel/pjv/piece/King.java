@@ -17,7 +17,11 @@ public class King extends Piece{
 
 
     public King(final TEAM pieceTEAM, final int piecePosition) {
-        super(piecePosition, pieceTEAM, PieceType.KING);
+        super(piecePosition, pieceTEAM, PieceType.KING, true);
+    }
+
+    public King(final TEAM pieceTeam, final int piecePosition, final boolean isFirstMove) {
+        super(piecePosition, pieceTeam, PieceType.KING, isFirstMove);
     }
     //In this part of the code, I have spelled out all the legal moves of the king.
     @Override
@@ -51,7 +55,7 @@ public class King extends Piece{
     }
 
     @Override
-    public King movePiece(Move move) {
+    public King movePiece(final Move move) {
         return new King(move.getMovedPiece().getPieceTeam(), move.getDestination());
     }
 

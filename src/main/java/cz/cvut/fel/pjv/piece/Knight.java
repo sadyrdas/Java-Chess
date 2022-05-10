@@ -19,7 +19,10 @@ public class Knight extends Piece {
     private final static int[] POSSIBLE_MOVE_COORDINATES = {-17, -15, -10, -6, 6, 10, 15, 17};
 
     public Knight(final TEAM pieceTEAM, final int piecePosition) {
-        super(piecePosition, pieceTEAM, PieceType.KNIGHT);
+        super(piecePosition, pieceTEAM, PieceType.KNIGHT, true);
+    }
+    public Knight(final TEAM pieceTeam, final int piecePosition, final boolean isFirstMove) {
+        super(piecePosition, pieceTeam, PieceType.KNIGHT, isFirstMove);
     }
 
     //First, I identified all the possible movements of the horse as a list
@@ -57,7 +60,7 @@ public class Knight extends Piece {
     }
 
     @Override
-    public Knight movePiece(Move move) {
+    public Knight movePiece(final Move move) {
         return new Knight(move.getMovedPiece().getPieceTeam(), move.getDestination());
     }
 

@@ -18,6 +18,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import static javax.swing.SwingUtilities.isLeftMouseButton;
@@ -32,6 +34,9 @@ public class MainWindow {
     private Tile originTile;
     private Tile DestinationTile;
     private Piece humanMovedPiece;
+    private BoardDirection boardDirection;
+
+    private boolean hightlightLegalMoves;
 
     private final BoardPanel boardpanel;
     private JFrame windowForGame;
@@ -44,6 +49,8 @@ public class MainWindow {
         this.windowForGame.setSize(600, 600);
         this.chessBoard = Board.createStandardBoard();
         this.boardpanel = new BoardPanel();
+        this.boardDirection = BoardDirection.NORMAL;
+        this.hightlightLegalMoves = false;
         this.windowForGame.add(boardpanel, BorderLayout.CENTER);
         this.windowForGame.setVisible(true);
 
@@ -51,6 +58,7 @@ public class MainWindow {
     private JMenuBar createMenuBar() {
         final JMenuBar MenuBar = new JMenuBar();
         MenuBar.add(createFileMenuBar());
+        MenuBar.add(createPreferencesMenu());
         return MenuBar;
     }
     private JMenu createFileMenuBar() {
@@ -65,6 +73,67 @@ public class MainWindow {
         file.add(exit);
         return file;
     }
+    private JMenu createPreferencesMenu() {
+
+        final JMenu preferencesMenu = new JMenu("Preferences");
+        final JMenuItem flipBoard = new JMenuItem("Flip Board");
+        flipBoard.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                boardDirection = boardDirection.opposite();
+                boardpanel.makeBoard(chessBoard);
+            }
+        });
+        preferencesMenu.add(flipBoard);
+        preferencesMenu.addSeparator();
+
+
+        final JCheckBoxMenuItem cbLegalMoveHighlighter = new JCheckBoxMenuItem(
+                "Highlight Legal Moves", false);
+
+        cbLegalMoveHighlighter.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                hightlightLegalMoves = cbLegalMoveHighlighter.isSelected();
+
+            }
+        });
+
+        preferencesMenu.add(cbLegalMoveHighlighter);
+        preferencesMenu.add(cbLegalMoveHighlighter);
+        return preferencesMenu;
+    }
+    //this method make like flip black and white team. Reverse from guava
+    public enum BoardDirection {
+        NORMAL {
+            @Override
+            List<TilePanel> traverse(final List<TilePanel> boardTiles) {
+                return boardTiles;
+            }
+
+            @Override
+            BoardDirection opposite() {
+                return FLIPPED;
+            }
+        },
+        FLIPPED {
+            @Override
+            List<TilePanel> traverse(final List<TilePanel> boardTiles) {
+                return Lists.reverse(boardTiles);
+            }
+
+            @Override
+            BoardDirection opposite() {
+                return NORMAL;
+            }
+        };
+
+        abstract List<TilePanel> traverse(final List<TilePanel> boardTiles);
+        abstract BoardDirection opposite();
+
+    }
+
+
 
 
     // this class describes chess board for game
@@ -82,9 +151,10 @@ public class MainWindow {
             setSize(500, 450);
             validate();
         }
+        //if is preference normal than will for loop in normal way, if preference flipper than will in opposite way
         public void makeBoard(final Board board) {
             removeAll();
-            for (final TilePanel tilePanel: boardTiles) {
+            for (final TilePanel tilePanel: boardDirection.traverse(boardTiles)) {
                 tilePanel.makeTile(board);
                 add(tilePanel);
             }
@@ -92,6 +162,33 @@ public class MainWindow {
             repaint();
         }
     }
+
+    public static class MoveLog {
+        private final List<Move> moves;
+        MoveLog() {
+            this.moves = new ArrayList<>();
+        }
+        public List<Move> getMoves(){
+            return this.moves;
+        }
+        public void addMove(final Move move) {
+            this.moves.add(move);
+        }
+        public int size() {
+            return this.moves.size();
+        }
+        public void clear() {
+            this.moves.clear();
+        }
+        public Move removeMove(int index) {
+            return this.moves.remove(index);
+        }
+        public boolean removeMove(final Move move) {
+            return this.moves.remove(move);
+        }
+
+    }
+
 
 
     //this class describes tile on the chess board
@@ -167,6 +264,7 @@ public class MainWindow {
         public void makeTile(final Board board) {
             makeTileColor();
             makeTileImages(board);
+            highlightLegals(board);
             validate();
             repaint();
 
@@ -177,7 +275,7 @@ public class MainWindow {
                 try {
                     String fileName = board.getTile(this.IdOfTile).getPiece().getPieceTeam().toString().substring(0, 1) +
                             board.getTile(this.IdOfTile).getPiece().toString().toUpperCase() + ".gif";
-                    final BufferedImage image = ImageIO.read(getClass().getResourceAsStream("/chessPieces/" +fileName));
+                    final BufferedImage image = ImageIO.read(getClass().getResourceAsStream("/chessPieces/" + fileName));
                     add(new JLabel(new ImageIcon(image)));
 
 
@@ -187,6 +285,30 @@ public class MainWindow {
             }
 
         }
+
+        private void highlightLegals(final Board board) {
+            if (hightlightLegalMoves) {
+                for (final Move move : pieceLegalMoves(board)) {
+                    if (move.getDestination() == this.IdOfTile) {
+                        try {
+                            add(new JLabel(new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/legalmove.png")))));
+                        }
+                        catch (final IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+
+        private Collection<Move> pieceLegalMoves(final Board board) {
+            if(humanMovedPiece != null && humanMovedPiece.getPieceTeam() == board.currentPlayer().getTeam()) {
+                return humanMovedPiece.writeLegalMoves(board);
+            }
+            return Collections.emptyList();
+        }
+
+
         private void makeTileColor() {
             if(BoardUtils.FIRST_ROW[this.IdOfTile] || BoardUtils.THIRD_ROW[this.IdOfTile]
             || BoardUtils.FIFTH_ROW[this.IdOfTile] || BoardUtils.SEVENTH_ROW[this.IdOfTile]) {

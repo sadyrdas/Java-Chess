@@ -16,7 +16,11 @@ public class Bishop extends Piece {
     private final static int[] POSSIBLE_MOVE_VECTOR_COORDINATES = {-9, -7, 7, 9};
 
     public Bishop(final TEAM pieceTEAM, final int piecePosition) {
-        super(piecePosition, pieceTEAM, PieceType.BISHOP);
+        super(piecePosition, pieceTEAM, PieceType.BISHOP, true);
+
+    }
+    public Bishop(final TEAM pieceTeam, final int piecePosition, final boolean isFirstMove) {
+        super(piecePosition, pieceTeam, PieceType.BISHOP, isFirstMove);
     }
 
     //First, I identified all possible bispkup moves as a list
@@ -54,7 +58,7 @@ public class Bishop extends Piece {
     }
 
     @Override
-    public Bishop movePiece(Move move) {
+    public Bishop movePiece(final Move move) {
         return new Bishop(move.getMovedPiece().getPieceTeam(), move.getDestination());
     }
 
@@ -64,11 +68,11 @@ public class Bishop extends Piece {
     }
 
     private static boolean isFirstColumnExclusion(final int currentPosition, final int candidateOffSEt) {
-        return BoardUtils.FIRST_COLUM[currentPosition] && (candidateOffSEt == -9) || (candidateOffSEt == 7);
+        return BoardUtils.FIRST_COLUM[currentPosition] && (candidateOffSEt == -9 || candidateOffSEt == 7);
     }
 
     private static boolean isEigthColumnExclusion(final int currentPosition, final int candidateOffSEt) {
-        return BoardUtils.EIGHT_COLUM[currentPosition] && (candidateOffSEt == -7) || (candidateOffSEt == 9);
+        return BoardUtils.EIGHT_COLUM[currentPosition] && (candidateOffSEt == -7 || candidateOffSEt == 9);
 
     }
 }

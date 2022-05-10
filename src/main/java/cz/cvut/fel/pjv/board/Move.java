@@ -9,19 +9,28 @@ import static cz.cvut.fel.pjv.board.Board.*;
 //This class describes all moves off pieces.
 public abstract class Move {
 
-    final Board board;
-    final Piece movedPiece;
-    final int destinationCoordinate;
+    protected final Board board;
+    protected final Piece movedPiece;
+    protected final int destinationCoordinate;
+    protected final boolean isFirstMove;
 
 
     public static final Move NO_MOVE = new NoMoves();
 
     private Move(final Board board,
-                 final Piece piece,
+                 final Piece movedPiece,
                  final int destinationCoordinate) {
         this.board = board;
-        this.movedPiece = piece;
+        this.movedPiece = movedPiece;
         this.destinationCoordinate = destinationCoordinate;
+        this.isFirstMove = movedPiece.isFirstMove();
+    }
+
+    private Move(final Board board, final int destinationCoordinate) {
+        this.board = board;
+        this.destinationCoordinate = destinationCoordinate;
+        this.movedPiece = null;
+        this.isFirstMove = false;
     }
 
     @Override
@@ -30,7 +39,7 @@ public abstract class Move {
         int result = 1;
         result = prime * result + this.destinationCoordinate;
         result = prime * result + this.movedPiece.hashCode();
-
+        result = prime * result + this.movedPiece.getPiecePosition();
         return result;
     }
 
@@ -43,7 +52,8 @@ public abstract class Move {
             return false;
         }
         final Move otherMove = (Move) other;
-        return getDestination() == otherMove.getDestination() &&
+        return getCurrentCoordinate() == otherMove.getCurrentCoordinate() &&
+                getDestination() == otherMove.getDestination() &&
                 getMovedPiece().equals(otherMove.getMovedPiece());
 
 
@@ -90,18 +100,29 @@ public abstract class Move {
 
     public static final class MainMove extends Move {
 
-        public MainMove(final Board board, final Piece piece,
+        public MainMove(final Board board, final Piece movedPiece,
                         final int destinationCoordinate) {
-            super(board, piece, destinationCoordinate);
+            super(board, movedPiece, destinationCoordinate);
         }
-    }
+
+        @Override
+        public boolean equals(final Object other) {
+            return this == other || other instanceof MainMove && super.equals(other);
+        }
+//finish later
+//        @Override
+//        public String toString() {
+//            return movedPiece.getPieceType().toString() + BoardUtils.getPositionAtCoordinate(this.destinationCoordinate);
+//        }
+     }
+
     public static class AttackMove extends Move {
 
         final Piece attackedPiece;
 
-        public AttackMove(final Board board, final Piece piece,
+        public AttackMove(final Board board, final Piece movedPiece,
                           final int destinationCoordinate, final Piece attackedPiece) {
-            super(board, piece, destinationCoordinate);
+            super(board, movedPiece, destinationCoordinate);
             this.attackedPiece = attackedPiece;
         }
 
@@ -140,32 +161,32 @@ public abstract class Move {
 
     public static final class PawnMove extends Move {
 
-        public PawnMove(final Board board, final Piece piece,
+        public PawnMove(final Board board, final Piece movedPiece,
                         final int destinationCoordinate) {
-            super(board, piece, destinationCoordinate);
+            super(board, movedPiece, destinationCoordinate);
         }
     }
 
     public static class PawnAttackMove extends AttackMove {
 
-        public PawnAttackMove(final Board board, final Piece piece,
+        public PawnAttackMove(final Board board, final Piece movedPiece,
                               final int destinationCoordinate, final Piece attackedPiece) {
-            super(board, piece, destinationCoordinate, attackedPiece);
+            super(board, movedPiece, destinationCoordinate, attackedPiece);
         }
     }
 
     public static final class PawnEnPassantAttackMove extends PawnAttackMove {
-        public PawnEnPassantAttackMove(final Board board, final Piece piece,
+        public PawnEnPassantAttackMove(final Board board, final Piece movedPiece,
                                        final int destinationCoordinate, final Piece attackedPiece) {
-            super(board, piece, destinationCoordinate, attackedPiece);
+            super(board, movedPiece, destinationCoordinate, attackedPiece);
         }
     }
 
     public static final class PawnJump extends Move {
 
-        public PawnJump(final Board board, final Piece piece,
+        public PawnJump(final Board board, final Piece movedPiece,
                         final int destinationCoordinate) {
-            super(board, piece, destinationCoordinate);
+            super(board, movedPiece, destinationCoordinate);
         }
         @Override
         public Board execution() {
@@ -175,12 +196,12 @@ public abstract class Move {
                     builder.setPiece(piece);
                 }
             }
-            for(final Piece piece : this.board.currentPlayer().getOpponent().getActivePieces()){
+            for(final Piece piece : this.board.currentPlayer().getOpponent().getActivePieces()) {
                 builder.setPiece(piece);
             }
-            final Pawn movedPawn = (Pawn) this.movedPiece.movePiece(this);
+            final Pawn movedPawn = (Pawn)this.movedPiece.movePiece(this);
             builder.setPiece(movedPawn);
-            builder.setinPassantPiece(movedPawn);
+            builder.setEnPassantPiece(movedPawn);
             builder.setMoveMaker(this.board.currentPlayer().getOpponent().getTeam());
             return builder.build();
         }
@@ -192,12 +213,12 @@ public abstract class Move {
         protected final int castleRookStart;
         protected final int castleRookDestination;
 
-        public CastleMoves(final Board board, final Piece piece,
+        public CastleMoves(final Board board, final Piece movedPiece,
                            final int destinationCoordinate,
                            final Rook castleRook,
                            final int castleRookStart,
                            final int castleRookDestination) {
-            super(board, piece, destinationCoordinate);
+            super(board, movedPiece, destinationCoordinate);
             this.castleRook = castleRook;
             this.castleRookStart = castleRookStart;
             this.castleRookDestination =castleRookDestination;
@@ -231,12 +252,12 @@ public abstract class Move {
 
     public static final class KingSideCastleMoves extends CastleMoves {
 
-        public KingSideCastleMoves(final Board board, final Piece piece,
+        public KingSideCastleMoves(final Board board, final Piece movedPiece,
                                    final int destinationCoordinate,
                                    final Rook castleRook,
                                    final int castleRookStart,
                                    final int castleRookDestination) {
-            super(board, piece, destinationCoordinate, castleRook, castleRookStart, castleRookDestination);
+            super(board, movedPiece, destinationCoordinate, castleRook, castleRookStart, castleRookDestination);
         }
         @Override
         public String toString() {
@@ -246,12 +267,12 @@ public abstract class Move {
 
     public static final class QueenSideCastleMoves extends CastleMoves {
 
-        public QueenSideCastleMoves(final Board board, final Piece piece,
+        public QueenSideCastleMoves(final Board board, final Piece movedPiece,
                                     final int destinationCoordinate,
                                     final Rook castleRook,
                                     final int castleRookStart,
                                     final int castleRookDestination) {
-            super(board, piece, destinationCoordinate, castleRook, castleRookStart, castleRookDestination);
+            super(board, movedPiece, destinationCoordinate, castleRook, castleRookStart, castleRookDestination);
         }
         @Override
         public String toString() {

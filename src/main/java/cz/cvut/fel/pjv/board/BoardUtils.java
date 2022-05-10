@@ -1,4 +1,7 @@
 package cz.cvut.fel.pjv.board;
+
+import java.util.Map;
+
 //This class describes exceptions for all pieces on the board.
 public class BoardUtils {
     public static final boolean[] FIRST_COLUM = initColumn(0);
@@ -16,8 +19,15 @@ public class BoardUtils {
     public static final boolean[] SEVENTH_ROW = initRow(48);
     public static final boolean[] EIGHT_ROW = initRow(56);
 
+    //finish later
+//    public static final String[] ALGEBRAIC_NOTATION = initalizeAlgebraicNotation();
+//    public static final Map<String, Integer> POSITION_TO_COORDINATE = initalizePositCoordinToMap();
+
     public static final int TILES = 64;
     public static final int TILES_PER_ROW = 8;
+
+    private BoardUtils() {
+        throw new RuntimeException("You cannot instantiate me!");}
 
     //Here I want to initialize and control specific tiles in a column on the chessboard.
     private static boolean[] initColumn(int columnNumber) {
@@ -38,11 +48,16 @@ public class BoardUtils {
         return row;
     }
 
-    private BoardUtils() {
-        throw new RuntimeException("You cannot instantiate me!");
-    }
     public static boolean isValidTileCoordinate(final int coordinate) {
         return coordinate >=0 && coordinate < TILES;
     }
+//finish later
+//    public static int getCoordinateAtPosition(final String position) {
+//        return POSITION_TO_COORDINATE.get(position);
 
+//    }
+//    public static int getPositionAtCoordinate(final int coordinate) {
+//        return ALGEBRAIC_NOTATION[coordinate];
+
+//    }
 }

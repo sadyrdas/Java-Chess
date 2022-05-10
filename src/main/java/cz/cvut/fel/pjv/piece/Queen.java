@@ -16,7 +16,11 @@ public class Queen extends Piece{
     private final static int[] POSSIBLE_MOVE_VECTOR_COORDINATES = {-9, -8, -7, -1, 1, 7, 8, 9};
 
     public Queen(final TEAM pieceTEAM, final int piecePosition) {
-        super(piecePosition, pieceTEAM, PieceType.QUEEN);
+        super(piecePosition, pieceTEAM, PieceType.QUEEN, true);
+    }
+
+    public Queen(final TEAM pieceTeam, final int piecePosition, final boolean isFirstMove) {
+        super(piecePosition, pieceTeam, PieceType.QUEEN, isFirstMove);
     }
 //In this part of the code, I have spelled out all the legal moves of the queen.
     @Override
@@ -51,7 +55,7 @@ public class Queen extends Piece{
     }
 
     @Override
-    public Queen movePiece(Move move) {
+    public Queen movePiece(final Move move) {
         return new Queen(move.getMovedPiece().getPieceTeam(), move.getDestination());
     }
 

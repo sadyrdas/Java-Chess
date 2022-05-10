@@ -17,8 +17,13 @@ public class Rook extends Piece{
 
 
     public Rook(final TEAM pieceTEAM, final int piecePosition) {
-        super(piecePosition, pieceTEAM, PieceType.ROOK);
+        super(piecePosition, pieceTEAM, PieceType.ROOK, true);
     }
+
+    public Rook(final TEAM pieceTeam, final int piecePosition, final boolean isFirstMove) {
+        super(piecePosition, pieceTeam, PieceType.ROOK, isFirstMove);
+    }
+
     ////In this part of the code, I have spelled out all the legal moves of the rook.
     @Override
     public Collection<Move> writeLegalMoves(final Board board) {
@@ -52,7 +57,7 @@ public class Rook extends Piece{
     }
 
     @Override
-    public Rook movePiece(Move move) {
+    public Rook movePiece(final Move move) {
         return new Rook(move.getMovedPiece().getPieceTeam(), move.getDestination());
     }
 
@@ -67,7 +72,7 @@ public class Rook extends Piece{
     }
 
     private static boolean isEigthColumnExclusion(final int currentPosition, final int candidateOffSEt) {
-        return BoardUtils.EIGHT_COLUM[currentPosition] && (candidateOffSEt == -1);
+        return BoardUtils.EIGHT_COLUM[currentPosition] && (candidateOffSEt == 1);
 
     }
 }

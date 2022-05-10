@@ -167,13 +167,11 @@ public class Board {
             this.nextMoveMaker = nextMoveMaker;
             return this;
         }
-
+        public void setEnPassantPiece(final Pawn movedPawn) {
+            this.enPassantPawn = enPassantPawn;
+        }
         public Board build() {
             return new Board(this);
-        }
-
-        public void setinPassantPiece(Pawn movedPawn) {
-            this.enPassantPawn = enPassantPawn;
         }
     }
 }
