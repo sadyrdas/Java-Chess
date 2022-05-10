@@ -33,8 +33,6 @@ public class MainWindow {
     private Tile DestinationTile;
     private Piece humanMovedPiece;
 
-    private static String defaultPathForImagesOFPieces = "C:\\Users\\Acer\\IdeaProjects\\CHESS\\src\\main\\resources\\chessPieces\\";
-
     private final BoardPanel boardpanel;
     private JFrame windowForGame;
     public MainWindow() {
@@ -177,9 +175,9 @@ public class MainWindow {
             this.removeAll();
             if(board.getTile(this.IdOfTile).IsTileOccupied()) {
                 try {
-                    final BufferedImage image =
-                            ImageIO.read(new File(defaultPathForImagesOFPieces + board.getTile(this.IdOfTile).getPiece().getPieceTeam().toString().substring(0, 1) +
-                                    board.getTile(this.IdOfTile).getPiece().toString() + ".gif"));
+                    String fileName = board.getTile(this.IdOfTile).getPiece().getPieceTeam().toString().substring(0, 1) +
+                            board.getTile(this.IdOfTile).getPiece().toString().toUpperCase() + ".gif";
+                    final BufferedImage image = ImageIO.read(getClass().getResourceAsStream("/chessPieces/" +fileName));
                     add(new JLabel(new ImageIcon(image)));
 
 

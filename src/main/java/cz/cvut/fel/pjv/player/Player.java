@@ -77,7 +77,7 @@ public abstract class Player {
         return false;
     }
 
-    public boolean isSuperPiece() {
+    public boolean isCastled() {
         return false;
     }
     public boolean isMoveLegal(final Move move) {
