@@ -9,7 +9,6 @@ import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,7 +48,7 @@ public class DeadPiecesTable extends JPanel {
 
         for(final Move move : moveLog.getMoves()) {
             if (move.isAttack()) {
-                final Piece deadPiece = move.getAttackPiece();
+                final Piece deadPiece = move.getAttackedPiece();
                 if(deadPiece.getPieceTeam().isWhite()) {
                     whiteDeadPieces.add(deadPiece);
                 } else if (deadPiece.getPieceTeam().isBlack()) {

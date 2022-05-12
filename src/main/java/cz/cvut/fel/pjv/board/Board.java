@@ -19,12 +19,13 @@ public class Board {
     private final WhitePlayer whitePlayer;
     private final BlackPlayer blackPlayer;
     private final Player currentPlayer;
+    private final Pawn enPassantPawn;
 
     private Board(final Builder builder) {
         this.gameBoard = createGameBoard(builder);
         this.whitePieces = writeActivePieces(this.gameBoard, TEAM.WHITE);
         this.blackPieces = writeActivePieces(this.gameBoard, TEAM.BLACK);
-
+        this.enPassantPawn = builder.enPassantPawn;
         final Collection<Move> whiteStandardLegalMoves = writeLegalMoves(this.whitePieces);
         final Collection<Move> blackStandardLegalMoves = writeLegalMoves(this.blackPieces);
 
@@ -64,6 +65,9 @@ public class Board {
 
     public Player currentPlayer() {
         return this.currentPlayer;
+    }
+    public Pawn getEnPassantPawn() {
+        return this.enPassantPawn;
     }
 
     //This for loop describes all legal moves for starting board

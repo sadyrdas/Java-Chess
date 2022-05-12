@@ -111,6 +111,7 @@ public class GameHistoryPanel extends JPanel {
         public int getColumnCount() {
             return NAMES.length;
         }
+
         @Override
         public Object getValueAt(final int row, final int column) {
             final Row currentRow = this.values.get(row);

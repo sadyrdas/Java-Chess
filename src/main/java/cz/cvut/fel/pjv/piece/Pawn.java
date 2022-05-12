@@ -34,47 +34,60 @@ public class Pawn extends Piece {
 
             int possibleCoordinate = this.piecePosition + (this.pieceTeam.getDirection() * currentCandidateOffset);
 
-            if(!BoardUtils.isValidTileCoordinate(possibleCoordinate)) {
+            if (!BoardUtils.isValidTileCoordinate(possibleCoordinate)) {
                 continue;
             }
-            if(currentCandidateOffset == 8 && !board.getTile(possibleCoordinate).IsTileOccupied()) {
+            if (currentCandidateOffset == 8 && !board.getTile(possibleCoordinate).IsTileOccupied()) {
                 //finish this work(deal with promotion!!!!
                 legalMoves.add(new PawnMove(board, this, possibleCoordinate));
-            } else if(currentCandidateOffset == 16 && this.isFirstMove() &&
+            } else if (currentCandidateOffset == 16 && this.isFirstMove() &&
                     ((BoardUtils.SEVENTH_ROW[this.piecePosition] && this.getPieceTeam().isBlack()) ||
-                    (BoardUtils.SECOND_ROW[this.piecePosition] && this.getPieceTeam().isWhite()))) {
+                            (BoardUtils.SECOND_ROW[this.piecePosition] && this.getPieceTeam().isWhite()))) {
                 final int behindPossibleCoordinate = this.piecePosition + (this.pieceTeam.getDirection() * 8);
-                if(!board.getTile(behindPossibleCoordinate).IsTileOccupied() &&
+                if (!board.getTile(behindPossibleCoordinate).IsTileOccupied() &&
                         !board.getTile(possibleCoordinate).IsTileOccupied()) {
                     legalMoves.add(new PawnJump(board, this, possibleCoordinate));
                 }
-            //Here I have recorded exceptions for black pawns, namely on the edges of the chessboard.
-            }else if(currentCandidateOffset == 7 &&
+                //Here I have recorded exceptions for black pawns, namely on the edges of the chessboard.
+            } else if (currentCandidateOffset == 7 &&
                     !((BoardUtils.EIGHT_COLUM[this.piecePosition] && this.pieceTeam.isWhite() ||
-                    (BoardUtils.FIRST_COLUM[this.piecePosition] && this.pieceTeam.isBlack())))) {
-                if(board.getTile(possibleCoordinate).IsTileOccupied()) {
+                            (BoardUtils.FIRST_COLUM[this.piecePosition] && this.pieceTeam.isBlack())))) {
+                if (board.getTile(possibleCoordinate).IsTileOccupied()) {
                     final Piece pieceOnCandidate = board.getTile(possibleCoordinate).getPiece();
-                    if(this.pieceTeam != pieceOnCandidate.getPieceTeam()) {
+                    if (this.pieceTeam != pieceOnCandidate.getPieceTeam()) {
                         //Finish this
                         legalMoves.add(new PawnAttackMove(board, this, possibleCoordinate, pieceOnCandidate));
                     }
+                } else if (board.getEnPassantPawn() != null) {
+                    if (board.getEnPassantPawn().getPiecePosition() == (this.piecePosition + (this.pieceTeam.getOppositeDirection()))) {
+                        final Piece pieceOnCandidate = board.getEnPassantPawn();
+                        if (this.pieceTeam != pieceOnCandidate.getPieceTeam()) {
+                            legalMoves.add(new PawnEnPassantAttackMove(board, this, possibleCoordinate, pieceOnCandidate));
+                        }
+                    }
                 }
-            //Here I have recorded exceptions for white pawns, namely on the edges of the chessboard.
-            }else if(currentCandidateOffset == 9 &&
+                //Here I have recorded exceptions for white pawns, namely on the edges of the chessboard.
+            } else if (currentCandidateOffset == 9 &&
                     !((BoardUtils.FIRST_COLUM[this.piecePosition] && this.pieceTeam.isWhite() ||
                             (BoardUtils.EIGHT_COLUM[this.piecePosition] && this.pieceTeam.isBlack())))) {
-                if(board.getTile(possibleCoordinate).IsTileOccupied()) {
+                if (board.getTile(possibleCoordinate).IsTileOccupied()) {
                     final Piece pieceOnCandidate = board.getTile(possibleCoordinate).getPiece();
-                    if(this.pieceTeam != pieceOnCandidate.getPieceTeam()) {
+                    if (this.pieceTeam != pieceOnCandidate.getPieceTeam()) {
                         //Finish this
                         legalMoves.add(new PawnAttackMove(board, this, possibleCoordinate, pieceOnCandidate));
+                    }
+                } else if (board.getEnPassantPawn() != null) {
+                    if (board.getEnPassantPawn().getPiecePosition() == (this.piecePosition - (this.pieceTeam.getOppositeDirection()))) {
+                        final Piece pieceOnCandidate = board.getEnPassantPawn();
+                        if (this.pieceTeam != pieceOnCandidate.getPieceTeam()) {
+                            legalMoves.add(new PawnEnPassantAttackMove(board, this, possibleCoordinate, pieceOnCandidate));
+                        }
                     }
                 }
             }
         }
         return ImmutableList.copyOf(legalMoves);
     }
-
     @Override
     public Pawn movePiece(final Move move) {
         return new Pawn(move.getMovedPiece().getPieceTeam(), move.getDestination());
