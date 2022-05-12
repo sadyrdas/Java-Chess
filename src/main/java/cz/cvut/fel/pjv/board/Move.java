@@ -60,7 +60,9 @@ public abstract class Move {
 
     }
 
-
+    public Board getBoard() {
+        return this.board;
+    }
     public int getCurrentCoordinate() {
         return this.movedPiece.getPiecePosition();
     }
@@ -243,6 +245,62 @@ public abstract class Move {
         }
 
     }
+
+    public static class PawnPromotion extends Move {
+        final Move changedMove;
+        final Pawn promotedPawn;
+        public PawnPromotion(final Move changedMove) {
+            super(changedMove.getBoard(), changedMove.getMovedPiece(), changedMove.getDestination());
+            this.changedMove = changedMove;
+            this.promotedPawn = (Pawn) changedMove.getMovedPiece();
+        }
+
+        @Override
+        public int hashCode() {
+            return changedMove.hashCode() + (31 * changedMove.hashCode());
+        }
+
+        @Override
+        public boolean equals(final Object other) {
+            return this == other || other instanceof PawnPromotion && (super.equals(other));
+        }
+
+        @Override
+        public Board execution() {
+            final Board pawnMoveBoard = this.changedMove.execution();
+            final Board.Builder builder = new Builder();
+            for(final Piece piece : pawnMoveBoard.currentPlayer().getActivePieces()) {
+                if(!this.promotedPawn.equals(piece)) {
+                    builder.setPiece(piece);
+                }
+            }
+            for (final Piece piece : pawnMoveBoard.currentPlayer().getOpponent().getActivePieces()) {
+                builder.setPiece(piece);
+            }
+            builder.setPiece(this.promotedPawn.getPromotionPiece().movePiece(this));
+            builder.setMoveMaker(pawnMoveBoard.currentPlayer().getTeam());
+            return builder.build();
+
+
+        }
+
+        @Override
+        public boolean isAttack() {
+            return this.changedMove.isAttack();
+        }
+
+        @Override
+        public Piece getAttackedPiece() {
+            return this.changedMove.getAttackedPiece();
+        }
+
+        @Override
+        public String toString() {
+            return "";
+        }
+
+    }
+
 
     public static final class PawnJump extends Move {
 
