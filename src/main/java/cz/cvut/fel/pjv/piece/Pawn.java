@@ -32,17 +32,17 @@ public class Pawn extends Piece {
 
         for (final int currentCandidateOffset : POSSIBLE_MOVE_COORDINATES) {
 
-            final int possibleCoordinate = this.piecePosition + (this.pieceTeam.getDirection() * currentCandidateOffset);
+            int possibleCoordinate = this.piecePosition + (this.pieceTeam.getDirection() * currentCandidateOffset);
 
             if(!BoardUtils.isValidTileCoordinate(possibleCoordinate)) {
                 continue;
             }
             if(currentCandidateOffset == 8 && !board.getTile(possibleCoordinate).IsTileOccupied()) {
                 //finish this work(deal with promotion!!!!
-                legalMoves.add(new MainMove(board, this, possibleCoordinate));
+                legalMoves.add(new PawnMove(board, this, possibleCoordinate));
             } else if(currentCandidateOffset == 16 && this.isFirstMove() &&
-                    ((BoardUtils.SECOND_ROW[this.piecePosition] && this.getPieceTeam().isBlack()) ||
-                    (BoardUtils.SEVENTH_ROW[this.piecePosition] && this.getPieceTeam().isWhite()))) {
+                    ((BoardUtils.SEVENTH_ROW[this.piecePosition] && this.getPieceTeam().isBlack()) ||
+                    (BoardUtils.SECOND_ROW[this.piecePosition] && this.getPieceTeam().isWhite()))) {
                 final int behindPossibleCoordinate = this.piecePosition + (this.pieceTeam.getDirection() * 8);
                 if(!board.getTile(behindPossibleCoordinate).IsTileOccupied() &&
                         !board.getTile(possibleCoordinate).IsTileOccupied()) {
@@ -54,7 +54,7 @@ public class Pawn extends Piece {
                     (BoardUtils.FIRST_COLUM[this.piecePosition] && this.pieceTeam.isBlack())))) {
                 if(board.getTile(possibleCoordinate).IsTileOccupied()) {
                     final Piece pieceOnCandidate = board.getTile(possibleCoordinate).getPiece();
-                    if(this.pieceTeam != pieceOnCandidate.getPieceTeam()){
+                    if(this.pieceTeam != pieceOnCandidate.getPieceTeam()) {
                         //Finish this
                         legalMoves.add(new PawnAttackMove(board, this, possibleCoordinate, pieceOnCandidate));
                     }
@@ -65,7 +65,7 @@ public class Pawn extends Piece {
                             (BoardUtils.EIGHT_COLUM[this.piecePosition] && this.pieceTeam.isBlack())))) {
                 if(board.getTile(possibleCoordinate).IsTileOccupied()) {
                     final Piece pieceOnCandidate = board.getTile(possibleCoordinate).getPiece();
-                    if(this.pieceTeam != pieceOnCandidate.getPieceTeam()){
+                    if(this.pieceTeam != pieceOnCandidate.getPieceTeam()) {
                         //Finish this
                         legalMoves.add(new PawnAttackMove(board, this, possibleCoordinate, pieceOnCandidate));
                     }

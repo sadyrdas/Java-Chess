@@ -51,7 +51,7 @@ public class Knight extends Piece {
                     final Piece pieceAtDestination = possibleCoordinateTile.getPiece();
                     final TEAM pieceTEAM = pieceAtDestination.getPieceTeam();
                     if (this.pieceTeam != pieceTEAM) {
-                        legalMoves.add(new AttackMove(board, this, possibleCoordinate, pieceAtDestination));
+                        legalMoves.add(new MainAttackMove(board, this, possibleCoordinate, pieceAtDestination));
                     }
                 }
             }

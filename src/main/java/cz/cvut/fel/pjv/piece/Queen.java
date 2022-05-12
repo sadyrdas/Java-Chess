@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static cz.cvut.fel.pjv.board.Move.*;
+
 public class Queen extends Piece{
 
     private final static int[] POSSIBLE_MOVE_VECTOR_COORDINATES = {-9, -8, -7, -1, 1, 7, 8, 9};
@@ -39,12 +41,12 @@ public class Queen extends Piece{
                 if (BoardUtils.isValidTileCoordinate(possibleCoordinate)) {
                     final Tile possibleCoordinateTile = board.getTile(possibleCoordinate);
                     if (!possibleCoordinateTile.IsTileOccupied()) {
-                        legalMoves.add(new Move.MainMove(board, this, possibleCoordinate));
+                        legalMoves.add(new MainMove(board, this, possibleCoordinate));
                     } else {
                         final Piece pieceAtDestination = possibleCoordinateTile.getPiece();
                         final TEAM pieceTEAM = pieceAtDestination.getPieceTeam();
                         if (this.pieceTeam != pieceTEAM) {
-                            legalMoves.add(new Move.AttackMove(board, this, possibleCoordinate, pieceAtDestination));
+                            legalMoves.add(new MainAttackMove(board, this, possibleCoordinate, pieceAtDestination));
                         }
                         break;
                     }

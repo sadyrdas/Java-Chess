@@ -9,6 +9,7 @@ import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,25 +23,26 @@ public class DeadPiecesTable extends JPanel {
     private final JPanel northTable;
     private final JPanel southTable;
 
-
+    private static final Color TABLE_COLOR = Color.decode("0xFDF5E6");
     private static final EtchedBorder TABLE_BORDER = new EtchedBorder(EtchedBorder.RAISED);
-
+    private static final Dimension DEAD_PIECES = new Dimension(40,80);
     public DeadPiecesTable() {
         super(new BorderLayout());
-        setBackground(Color.WHITE);
+        setBackground(Color.decode("0xFDF5E6"));
         setBorder(TABLE_BORDER);
-        this.northTable = new JPanel(new GridLayout(4, 4));
-        this.southTable = new JPanel(new GridLayout(4, 4));
-        this.northTable.setBackground(Color.white);
-        this.southTable.setBackground(Color.red);
+        this.northTable = new JPanel(new GridLayout(8, 2));
+        this.southTable = new JPanel(new GridLayout(8, 2));
+        this.northTable.setBackground(TABLE_COLOR);
+        this.southTable.setBackground(TABLE_COLOR);
         this.add(this.northTable, BorderLayout.NORTH);
         this.add(this.southTable, BorderLayout.SOUTH);
-        setSize(40,80);
+        setPreferredSize(DEAD_PIECES);
     }
 
+    //this method describes new lists, which will have all dead pieces by team
     public void redo(final MoveLog moveLog){
-        this.southTable.removeAll();
-        this.northTable.removeAll();
+        southTable.removeAll();
+        northTable.removeAll();
 
         final List<Piece> whiteDeadPieces = new ArrayList<>();
         final List<Piece> blackDeadPieces = new ArrayList<>();
@@ -56,7 +58,6 @@ public class DeadPiecesTable extends JPanel {
                     throw new RuntimeException("Mistake!");
                 }
             }
-
         }
         Collections.sort(whiteDeadPieces, new Comparator<Piece>() {
             @Override
@@ -73,11 +74,13 @@ public class DeadPiecesTable extends JPanel {
 
         for (final Piece deadPiece : whiteDeadPieces) {
             try {
-                final BufferedImage image = ImageIO.read(getClass().getResourceAsStream("/chessPieces/"
-                        + deadPiece.getPieceTeam().toString().substring(0,1) + "" + deadPiece.toString()));
-                final ImageIcon icon = new ImageIcon(image);
-                final JLabel imageLabel = new JLabel();
-                this.southTable.add(imageLabel);
+                String filename = deadPiece.getPieceTeam().toString().substring(0, 1) + "" + deadPiece.toString()
+                        + ".gif";
+                final BufferedImage image = ImageIO.read(getClass().getResource("/deadPieces/" + filename));
+                final ImageIcon ic = new ImageIcon(image);
+                final JLabel imageLabel = new JLabel(new ImageIcon(ic.getImage().getScaledInstance(
+                        ic.getIconWidth() - 15, ic.getIconWidth() - 15, Image.SCALE_SMOOTH)));
+                this.northTable.add(imageLabel);
             }catch (final IOException e) {
                 e.printStackTrace();
 
@@ -85,10 +88,13 @@ public class DeadPiecesTable extends JPanel {
         }
         for (final Piece deadPiece : blackDeadPieces) {
             try {
-                final BufferedImage image = ImageIO.read(getClass().getResourceAsStream("/chessPieces/"
-                        + deadPiece.getPieceTeam().toString().substring(0,1) + "" + deadPiece.toString()));
-                final ImageIcon icon = new ImageIcon(image);
-                final JLabel imageLabel = new JLabel();
+
+                String filename = deadPiece.getPieceTeam().toString().substring(0, 1) + "" + deadPiece.toString()
+                        + ".gif";
+                final BufferedImage image = ImageIO.read(getClass().getResource("/deadPieces/" + filename));
+                final ImageIcon ic = new ImageIcon(image);
+                final JLabel imageLabel = new JLabel(new ImageIcon(ic.getImage().getScaledInstance(
+                        ic.getIconWidth() - 15, ic.getIconWidth() - 15, Image.SCALE_SMOOTH)));
                 this.southTable.add(imageLabel);
             }catch (final IOException e) {
                 e.printStackTrace();

@@ -25,7 +25,7 @@ public abstract class Piece {
     private int computeHashCode() {
         int result = pieceType.hashCode();
         result = 31 * result + pieceTeam.hashCode();
-        result = 31* result + piecePosition;
+        result = 31 * result + piecePosition;
         result = 31 * result + (isFirstMove ? 1:0);
         return result;
     }
@@ -38,7 +38,8 @@ public abstract class Piece {
             return false;
         }
         final Piece otherPiece = (Piece) other;
-        return piecePosition == otherPiece.getPiecePosition() && pieceType == otherPiece.getPieceType() && pieceTeam == otherPiece.getPieceTeam() && isFirstMove == otherPiece.isFirstMove();
+        return piecePosition == otherPiece.getPiecePosition() && pieceType == otherPiece.getPieceType() &&
+                pieceTeam == otherPiece.getPieceTeam() && isFirstMove == otherPiece.isFirstMove();
     }
 
     @Override
@@ -70,7 +71,7 @@ public abstract class Piece {
 
     public enum PieceType {
 
-        PAWN("p", 10){
+        PAWN("P", 10){
             @Override
             public boolean isKing() {
                 return false;
@@ -81,7 +82,7 @@ public abstract class Piece {
                 return false;
             }
         },
-        KNIGHT("n",30) {
+        KNIGHT("N",30) {
             @Override
             public boolean isKing() {
                 return false;
@@ -92,7 +93,7 @@ public abstract class Piece {
                 return false;
             }
         },
-        BISHOP("b",30) {
+        BISHOP("B",30) {
             @Override
             public boolean isKing() {
                 return false;
@@ -103,7 +104,7 @@ public abstract class Piece {
                 return false;
             }
         },
-        ROOK("r",50) {
+        ROOK("R",50) {
             @Override
             public boolean isKing() {
                 return false;
@@ -114,7 +115,7 @@ public abstract class Piece {
                 return true;
             }
         },
-        QUEEN("q",90) {
+        QUEEN("Q",90) {
             @Override
             public boolean isKing() {
                 return false;
@@ -125,7 +126,7 @@ public abstract class Piece {
                 return false;
             }
         },
-        KING("k",150) {
+        KING("K",150) {
             @Override
             public boolean isKing() {
                 return true;

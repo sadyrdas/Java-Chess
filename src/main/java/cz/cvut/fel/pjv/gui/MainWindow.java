@@ -15,7 +15,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -30,16 +29,18 @@ public class MainWindow {
     private final Color lightTileColor = Color.decode("#FFFFFF");
     private final Color darkTileColor = Color.decode("#560319");
     private Board chessBoard;
-
+    private final MoveLog moveLog;
+    private final GameHistoryPanel gameHistoryPanel;
+    private final DeadPiecesTable deadPiecesTable;
     private Tile originTile;
     private Tile DestinationTile;
     private Piece humanMovedPiece;
     private BoardDirection boardDirection;
-
-    private boolean hightlightLegalMoves;
-
     private final BoardPanel boardpanel;
+    private boolean highLighLegalMoves;
     private JFrame windowForGame;
+
+
     public MainWindow() {
 
         this.windowForGame = new JFrame("Dastan's chess game");
@@ -48,13 +49,19 @@ public class MainWindow {
         this.windowForGame.setJMenuBar(MenuBar);
         this.windowForGame.setSize(600, 600);
         this.chessBoard = Board.createStandardBoard();
+        this.gameHistoryPanel = new GameHistoryPanel();
+        this.deadPiecesTable = new DeadPiecesTable();
         this.boardpanel = new BoardPanel();
+        this.moveLog = new MoveLog();
         this.boardDirection = BoardDirection.NORMAL;
-        this.hightlightLegalMoves = false;
-        this.windowForGame.add(boardpanel, BorderLayout.CENTER);
+        this.highLighLegalMoves = false;
+        this.windowForGame.add(this.deadPiecesTable, BorderLayout.EAST );
+        this.windowForGame.add(this.boardpanel, BorderLayout.CENTER);
+        this.windowForGame.add(this.gameHistoryPanel, BorderLayout.WEST);
         this.windowForGame.setVisible(true);
-
     }
+
+
     private JMenuBar createMenuBar() {
         final JMenuBar MenuBar = new JMenuBar();
         MenuBar.add(createFileMenuBar());
@@ -94,7 +101,7 @@ public class MainWindow {
         cbLegalMoveHighlighter.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                hightlightLegalMoves = cbLegalMoveHighlighter.isSelected();
+                highLighLegalMoves = cbLegalMoveHighlighter.isSelected();
 
             }
         });
@@ -148,13 +155,13 @@ public class MainWindow {
                 this.boardTiles.add(tilePanel);
                 add(tilePanel);
             }
-            setSize(500, 450);
+            setSize(500, 500);
             validate();
         }
         //if is preference normal than will for loop in normal way, if preference flipper than will in opposite way
         public void makeBoard(final Board board) {
             removeAll();
-            for (final TilePanel tilePanel: boardDirection.traverse(boardTiles)) {
+            for (final TilePanel tilePanel : boardDirection.traverse(boardTiles)) {
                 tilePanel.makeTile(board);
                 add(tilePanel);
             }
@@ -222,6 +229,7 @@ public class MainWindow {
                             final MoveTransition transition = chessBoard.currentPlayer().makeMove(move);
                             if (transition.getMoveStatus().isDID()) {
                                 chessBoard = transition.getTransitionBoard();
+                                moveLog.addMove(move);
                             }
                             //That will not be pastmove+nextmove;
                             originTile = null;
@@ -231,6 +239,8 @@ public class MainWindow {
                         SwingUtilities.invokeLater(new Runnable() {
                             @Override
                             public void run() {
+                                gameHistoryPanel.redo(chessBoard, moveLog);
+                                deadPiecesTable.redo(moveLog);
                                 boardPanel.makeBoard(chessBoard);
                             }
                         });
@@ -286,7 +296,7 @@ public class MainWindow {
         }
 
         private void highlightLegals(final Board board) {
-            if (hightlightLegalMoves) {
+            if (highLighLegalMoves) {
                 for (final Move move : pieceLegalMoves(board)) {
                     if (move.getDestination() == this.IdOfTile) {
                         try {
@@ -311,12 +321,12 @@ public class MainWindow {
         private void makeTileColor() {
             if(BoardUtils.FIRST_ROW[this.IdOfTile] || BoardUtils.THIRD_ROW[this.IdOfTile]
             || BoardUtils.FIFTH_ROW[this.IdOfTile] || BoardUtils.SEVENTH_ROW[this.IdOfTile]) {
-                setBackground(this.IdOfTile % 2 == 0 ? lightTileColor : darkTileColor);
+                setBackground(this.IdOfTile % 2 != 0 ? lightTileColor : darkTileColor);
             }
             if(BoardUtils.SECOND_ROW[this.IdOfTile] ||BoardUtils.FOURTH_ROW[this.IdOfTile]
                 || BoardUtils.SIXTH_ROW[this.IdOfTile] || BoardUtils.EIGHT_ROW[this.IdOfTile]) {
-                setBackground(this.IdOfTile % 2 != 0 ? lightTileColor : darkTileColor);
-            };
+                setBackground(this.IdOfTile % 2 == 0 ? lightTileColor : darkTileColor);
+            }
         }
     }
 }

@@ -6,7 +6,7 @@ import cz.cvut.fel.pjv.player.WhitePlayer;
 
 //In this class, I describe the privatization of figures to team.
 public enum TEAM {
-    WHITE {
+    WHITE() {
         @Override
         public int getDirection() {
             return -1;
@@ -14,7 +14,7 @@ public enum TEAM {
 
         @Override
         public boolean isWhite() {
-            return false;
+            return true;
         }
 
         @Override
@@ -27,7 +27,7 @@ public enum TEAM {
             return whitePlayer;
         }
     },
-    BLACK {
+    BLACK() {
         @Override
         public int getDirection() {
             return 1;
@@ -40,7 +40,7 @@ public enum TEAM {
 
         @Override
         public boolean isBlack() {
-            return false;
+            return true;
         }
 
         @Override

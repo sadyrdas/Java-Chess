@@ -25,6 +25,14 @@ public abstract class Player {
 
     }
 
+    public King getPlayerKing() {
+        return this.playerKing;
+    }
+
+    public Collection<Move> getLegalMoves() {
+        return this.legalMoves;
+    }
+
     protected static Collection<Move> writeAttacksOnTile(int piecePosition, Collection<Move> moves) {
         final List<Move> attackMoves = new ArrayList<>();
         for(final Move move : moves) {
@@ -35,13 +43,7 @@ public abstract class Player {
         return ImmutableList.copyOf(attackMoves);
     }
 
-    public King getPlayerKing() {
-        return this.playerKing;
-    }
 
-    public Collection<Move> getLegalMoves() {
-        return this.legalMoves;
-    }
 
     private King THEKING() {
         for (final Piece piece: getActivePieces()) {
