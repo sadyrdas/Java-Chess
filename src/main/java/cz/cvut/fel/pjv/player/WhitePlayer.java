@@ -31,14 +31,14 @@ public class WhitePlayer extends Player{
 
     @Override
     public Player getOpponent() {
-        return this.board.getBlackPlayer();
+        return this.board.blackPlayer();
     }
 
     @Override
     protected Collection<Move> writeKingCastles(final Collection<Move> playerLegals, final Collection<Move> opponentLegals) {
 
         final List<Move> kingCastles = new ArrayList<>();
-        if (this.playerKing.isFirstMove() && !this.isInCheck()) {
+        if (this.playerKing.isFirstMove() && this.playerKing.getPiecePosition() == 60 && !this.isInCheck()) {
             //white king side castle
             if (!this.board.getTile(61).IsTileOccupied() && !this.board.getTile(62).IsTileOccupied()) {
                 final Tile rookTile = this.board.getTile(63);

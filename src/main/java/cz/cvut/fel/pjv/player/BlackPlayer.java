@@ -41,9 +41,9 @@ public class BlackPlayer extends Player{
     protected Collection<Move> writeKingCastles(final Collection<Move> playerLegals,
                                                 final Collection<Move> opponentLegals) {
         final List<Move> kingCastles = new ArrayList<>();
-        if (this.playerKing.isFirstMove() && !this.isInCheck()) {
+        if (this.playerKing.isFirstMove() && this.playerKing.getPiecePosition() == 4 && !this.isInCheck()) {
             //white king side castle
-            if (!this.board.getTile(5).IsTileOccupied() && !this.board.getTile(6).IsTileOccupied()) {
+            if (!this.board.getTile(5).IsTileOccupied() &&  !this.board.getTile(6).IsTileOccupied()) {
                 final Tile rookTile = this.board.getTile(7);
 
                 if(rookTile.IsTileOccupied() && rookTile.getPiece().isFirstMove()) {

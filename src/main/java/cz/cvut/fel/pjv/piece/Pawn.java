@@ -45,9 +45,10 @@ public class Pawn extends Piece {
                     legalMoves.add(new PawnMove(board, this, possibleCoordinate));
                 }
                 //pawn jump
-                } else if (currentCandidateOffset == 16 && this.isFirstMove() &&
-                    ((BoardUtils.SEVENTH_ROW[this.piecePosition] && this.getPieceTeam().isBlack()) ||
-                            (BoardUtils.SECOND_ROW[this.piecePosition] && this.getPieceTeam().isWhite()))) {
+                }
+            else if (currentCandidateOffset == 16 && this.isFirstMove() &&
+                    ((BoardUtils.SEVENTH_ROW[this.piecePosition] && this.getPieceTeam().isWhite()) ||
+                            (BoardUtils.SECOND_ROW[this.piecePosition] && this.getPieceTeam().isBlack()))) {
                 final int behindPossibleCoordinate = this.piecePosition + (this.pieceTeam.getDirection() * 8);
                 if (!board.getTile(behindPossibleCoordinate).IsTileOccupied() &&
                         !board.getTile(possibleCoordinate).IsTileOccupied()) {

@@ -16,7 +16,7 @@ public class GameHistoryPanel extends JPanel {
 
     private final DataModel model;
     private final JScrollPane scrollPane;
-    private static final Dimension HISTORY_PANEL_DIMENSION = new Dimension(100,40);
+    private static final Dimension HISTORY_PANEL_DIMENSION = new Dimension(250,40);
 
     GameHistoryPanel() {
         this.setLayout(new BorderLayout());
@@ -58,9 +58,11 @@ public class GameHistoryPanel extends JPanel {
 
     private String writeCheckAndCheckMateHash(final Board board) {
         if (board.currentPlayer().isInCheckMate()) {
-            return "#";
+            System.out.println("CHECKMATE!");
+            return "#" + "" + "CHECKMATE";
         }else if (board.currentPlayer().isInCheck()) {
-            return "+";
+            System.out.println("CHECK!");
+            return "+" + "" + "CHECK";
         }
         return "";
     }

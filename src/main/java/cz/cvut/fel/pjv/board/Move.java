@@ -408,8 +408,17 @@ public abstract class Move {
 
         @Override
         public boolean equals(final Object other) {
-            return this == other || other instanceof KingSideCastleMoves && super.equals(other);
+            if (this == other) {
+                return true;
+            }
+            if (!(other instanceof KingSideCastleMoves)) {
+                return false;
+            }
+            final KingSideCastleMoves otherKingSideCastleMove = (KingSideCastleMoves) other;
+            return super.equals(otherKingSideCastleMove) && this.castleRook.equals(otherKingSideCastleMove.getCastleRook());
         }
+
+
 
         @Override
         public String toString() {
@@ -429,7 +438,14 @@ public abstract class Move {
 
         @Override
         public boolean equals(final Object other) {
-            return this == other || other instanceof QueenSideCastleMoves && super.equals(other);
+            if (this == other) {
+                return true;
+            }
+            if (!(other instanceof QueenSideCastleMoves)) {
+                return false;
+            }
+            final QueenSideCastleMoves otherQueenSideCastleMove = (QueenSideCastleMoves) other;
+            return super.equals(otherQueenSideCastleMove) && this.castleRook.equals(otherQueenSideCastleMove.getCastleRook());
         }
 
         @Override

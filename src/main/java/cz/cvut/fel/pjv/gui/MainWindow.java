@@ -1,5 +1,6 @@
 package cz.cvut.fel.pjv.gui;
 import com.google.common.collect.Lists;
+import com.sun.tools.javac.Main;
 import cz.cvut.fel.pjv.board.Board;
 import cz.cvut.fel.pjv.board.BoardUtils;
 import cz.cvut.fel.pjv.board.Move;
@@ -61,7 +62,9 @@ public class MainWindow {
         this.windowForGame.setVisible(true);
     }
 
-
+    private Board getGameBoard() {
+        return this.chessBoard;
+    }
     private JMenuBar createMenuBar() {
         final JMenuBar MenuBar = new JMenuBar();
         MenuBar.add(createFileMenuBar());
@@ -169,6 +172,7 @@ public class MainWindow {
             repaint();
         }
     }
+
 
     public static class MoveLog {
         private final List<Move> moves;

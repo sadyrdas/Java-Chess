@@ -79,6 +79,13 @@ public abstract class Player {
         return false;
     }
 
+    public boolean isKingSideCastleCapable() {
+        return this.playerKing.isKingSideCastleCapable();
+    }
+    public boolean isQueenSideCastleCapable() {
+        return this.playerKing.isQueenSideCastleCapable();
+    }
+
     public boolean isCastled() {
         return false;
     }

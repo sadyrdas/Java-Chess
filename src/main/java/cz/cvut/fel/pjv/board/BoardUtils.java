@@ -8,9 +8,6 @@ import java.util.Map;
 
 //This class describes exceptions for all pieces on the board.
 public class BoardUtils {
-
-
-
     public static final boolean[] FIRST_COLUM = initColumn(0);
     public static final boolean[] SECOND_COLUM = initColumn(1);
     public static final boolean[] SEVEN_COLUM = initColumn(6);
