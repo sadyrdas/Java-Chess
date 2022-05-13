@@ -3,7 +3,7 @@ package cz.cvut.fel.pjv.gui;
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import java.awt.*;
-
+//just jpanel for timer for black and white teams
 public class Timer extends JPanel {
     private final JLabel blackTimer;
     private final JLabel whiteTimer;

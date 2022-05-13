@@ -177,8 +177,9 @@ public class Board {
             this.nextMoveMaker = nextMoveMaker;
             return this;
         }
-        public void setEnPassantPiece(final Pawn movedPawn) {
+        public Builder setEnPassantPiece(final Pawn enPassantPawn) {
             this.enPassantPawn = enPassantPawn;
+            return this;
         }
         public Board build() {
             return new Board(this);

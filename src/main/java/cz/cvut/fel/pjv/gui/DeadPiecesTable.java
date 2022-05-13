@@ -70,7 +70,7 @@ public class DeadPiecesTable extends JPanel {
                 return Ints.compare(o1.getPieceValue(), o2.getPieceValue());
             }
         });
-
+        // these for lopes will set image ad my table;
         for (final Piece deadPiece : whiteDeadPieces) {
             try {
                 String filename = deadPiece.getPieceTeam().toString().substring(0, 1) + "" + deadPiece.toString()

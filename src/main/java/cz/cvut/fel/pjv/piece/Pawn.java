@@ -20,7 +20,7 @@ public class Pawn extends Piece {
     public Pawn(final TEAM pieceTEAM, final int piecePosition) {
         super(piecePosition, pieceTEAM, PieceType.PAWN, true);
     }
-
+    //this second constructor in all of pieces describes not first move pieces;
     public Pawn(final TEAM pieceTeam, final int piecePosition, final boolean isFirstMove) {
         super(piecePosition, pieceTeam, PieceType.PAWN, isFirstMove);
     }
@@ -37,6 +37,7 @@ public class Pawn extends Piece {
             if (!BoardUtils.isValidTileCoordinate(possibleCoordinate)) {
                 continue;
             }
+            //normal move and pawnPromotion
             if (currentCandidateOffset == 8 && !board.getTile(possibleCoordinate).IsTileOccupied()) {
                 if (this.pieceTeam.isPawnPromotion(possibleCoordinate)) {
                     legalMoves.add(new PawnPromotion (new PawnMove(board, this, possibleCoordinate)));
@@ -54,7 +55,7 @@ public class Pawn extends Piece {
                         !board.getTile(possibleCoordinate).IsTileOccupied()) {
                     legalMoves.add(new PawnJump(board, this, possibleCoordinate));
                 }
-                //Here I have recorded exceptions for black pawns, namely on the edges of the chessboard.
+                // Here one of way for Pawn attack and pawnPromotion and EnPassantPawn
             } else if (currentCandidateOffset == 7 &&
                     !((BoardUtils.EIGHT_COLUM[this.piecePosition] && this.pieceTeam.isWhite() ||
                             (BoardUtils.FIRST_COLUM[this.piecePosition] && this.pieceTeam.isBlack())))) {
@@ -68,15 +69,16 @@ public class Pawn extends Piece {
                             legalMoves.add(new PawnAttackMove(board, this, possibleCoordinate, pieceOnCandidate));
                         }
                     }
-                } else if (board.getEnPassantPawn() != null) {
-                    if (board.getEnPassantPawn().getPiecePosition() == (this.piecePosition + (this.pieceTeam.getOppositeDirection()))) {
-                        final Piece pieceOnCandidate = board.getEnPassantPawn();
-                        if (this.pieceTeam != pieceOnCandidate.getPieceTeam()) {
-                            legalMoves.add(new PawnEnPassantAttackMove(board, this, possibleCoordinate, pieceOnCandidate));
+                } else if (board.getEnPassantPawn() != null && board.getEnPassantPawn().getPiecePosition() ==
+                        (this.piecePosition + (this.pieceTeam.getOppositeDirection()))) {
+
+                    final Piece pieceOnCandidate = board.getEnPassantPawn();
+                    if (this.pieceTeam != pieceOnCandidate.getPieceTeam()) {
+                        legalMoves.add(new PawnEnPassantAttackMove(board, this, possibleCoordinate, pieceOnCandidate));
                         }
-                    }
+
                 }
-                //Here I have recorded exceptions for white pawns, namely on the edges of the chessboard.
+                // Here one of way for Pawn attack and pawnPromotion and EnPassantPawn
             } else if (currentCandidateOffset == 9 &&
                     !((BoardUtils.FIRST_COLUM[this.piecePosition] && this.pieceTeam.isWhite() ||
                             (BoardUtils.EIGHT_COLUM[this.piecePosition] && this.pieceTeam.isBlack())))) {
@@ -91,13 +93,12 @@ public class Pawn extends Piece {
                             legalMoves.add(new PawnAttackMove(board, this, possibleCoordinate, pieceOnCandidate));
                         }
                     }
-                } else if (board.getEnPassantPawn() != null) {
-                    if (board.getEnPassantPawn().getPiecePosition() == (this.piecePosition - (this.pieceTeam.getOppositeDirection()))) {
-                        final Piece pieceOnCandidate = board.getEnPassantPawn();
-                        if (this.pieceTeam != pieceOnCandidate.getPieceTeam()) {
-                            legalMoves.add(new PawnEnPassantAttackMove(board, this, possibleCoordinate, pieceOnCandidate));
+                } else if (board.getEnPassantPawn() != null && board.getEnPassantPawn().getPiecePosition() ==
+                        (this.piecePosition - (this.pieceTeam.getOppositeDirection()))) {
+                    final Piece pieceOnCandidate = board.getEnPassantPawn();
+                    if (this.pieceTeam != pieceOnCandidate.getPieceTeam()) {
+                        legalMoves.add(new PawnEnPassantAttackMove(board, this, possibleCoordinate, pieceOnCandidate));
                         }
-                    }
                 }
             }
         }
