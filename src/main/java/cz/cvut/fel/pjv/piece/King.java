@@ -17,35 +17,18 @@ public class King extends Piece{
 
     private final static int[] POSSIBLE_MOVE_COORDINATES = {-9, -8, -7, -1, 1, 7, 8, 9};
 
-    private final boolean isCastled;
-    private final boolean kingSideCastleCapable;
-    private final boolean queenSideCastleCapable;
 
-    public King(final TEAM pieceTEAM, final int piecePosition, final boolean kingSideCastleCapable, final boolean queenSideCastleCapable) {
+    public King(final TEAM pieceTEAM, final int piecePosition) {
         super(piecePosition, pieceTEAM, PieceType.KING, true);
-        this.isCastled = false;
-        this.kingSideCastleCapable = kingSideCastleCapable;
-        this.queenSideCastleCapable = queenSideCastleCapable;
+
     }
 
     public King(final TEAM pieceTeam, final int piecePosition, final boolean isFirstMove, final boolean isCastled, final boolean kingSideCastleCapable, final boolean queenSideCastleCapable) {
         super(piecePosition, pieceTeam, PieceType.KING, isFirstMove);
-        this.isCastled = isCastled;
-        this.kingSideCastleCapable = kingSideCastleCapable;
-        this.queenSideCastleCapable = queenSideCastleCapable;
+
     }
 
-    public boolean isCastled() {
-        return this.isCastled;
-    }
 
-    public boolean isKingSideCastleCapable() {
-        return this.kingSideCastleCapable;
-    }
-
-    public boolean isQueenSideCastleCapable() {
-        return this.queenSideCastleCapable;
-    }
 
 
 
@@ -90,25 +73,7 @@ public class King extends Piece{
         return PieceType.KING.toString();
     }
 
-    @Override
-    public boolean equals(final Object other) {
-        if (this == other) {
-            return true;
-        }
-        if (!(other instanceof King)) {
-            return false;
-        }
-        if (!super.equals(other)) {
-            return false;
-        }
-        final King king = (King) other;
-        return isCastled == king.isCastled;
-    }
 
-    @Override
-    public int hashCode() {
-        return (31 * super.hashCode()) + (isCastled ? 1 : 0);
-    }
 
     //Here I have prescribed exceptions for the king's moves.
     private static boolean IsFirstColumExclusion(final int currentPosition, final int candidateOffset) {
