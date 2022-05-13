@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.List;
 
 public abstract class Player {
+    private boolean timedout=false;
     protected final Board board;
     protected final King playerKing;
     protected final Collection<Move> legalMoves;
@@ -62,7 +63,12 @@ public abstract class Player {
         return isInCheck && !EscapeMoves();
     }
 
-
+    public void timeout(){
+        timedout=true;
+    }
+    public boolean isTimedout(){
+        return timedout;
+    }
 
     public boolean isInMate() {
         return !isInCheck && !EscapeMoves();

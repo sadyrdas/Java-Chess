@@ -29,7 +29,7 @@ import static javax.swing.SwingUtilities.isRightMouseButton;
 public class MainWindow {
     private final Color lightTileColor = Color.decode("#FFFFFF");
     private final Color darkTileColor = Color.decode("#560319");
-    private Board chessBoard;
+    public Board chessBoard;
     private final MoveLog moveLog;
     private final GameHistoryPanel gameHistoryPanel;
     private final DeadPiecesTable deadPiecesTable;
@@ -40,7 +40,8 @@ public class MainWindow {
     private final BoardPanel boardpanel;
     private boolean highLighLegalMoves;
     private JFrame windowForGame;
-    private Timer myTimer;
+    public Timer myTimer;
+    private TimerThread thred;
 
     public MainWindow() {
 
@@ -54,13 +55,15 @@ public class MainWindow {
         this.deadPiecesTable = new DeadPiecesTable();
         this.boardpanel = new BoardPanel();
         this.moveLog = new MoveLog();
-        this.myTimer = new Timer();
+        this.myTimer = new Timer(60);
         this.boardDirection = BoardDirection.NORMAL;
         this.highLighLegalMoves = false;
         this.windowForGame.add(this.deadPiecesTable, BorderLayout.EAST );
         this.windowForGame.add(this.boardpanel, BorderLayout.CENTER);
         this.windowForGame.add(this.gameHistoryPanel, BorderLayout.WEST);
         this.windowForGame.add(this.myTimer, BorderLayout.SOUTH);
+        this.thred= new TimerThread(this);
+        this.thred.start();
         this.windowForGame.setVisible(true);
 
 

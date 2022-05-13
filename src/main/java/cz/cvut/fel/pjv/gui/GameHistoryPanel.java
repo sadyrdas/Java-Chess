@@ -63,6 +63,9 @@ public class GameHistoryPanel extends JPanel {
         }else if (board.currentPlayer().isInCheck()) {
             System.out.println("CHECK!");
             return "+" + "" + "CHECK";
+        }else if(board.currentPlayer().isTimedout()){
+            System.out.println("TIMEOUT!");
+            return "$" + "" + "TIMEOUT";
         }
         return "";
     }
