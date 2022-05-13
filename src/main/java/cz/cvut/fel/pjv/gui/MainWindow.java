@@ -1,6 +1,5 @@
 package cz.cvut.fel.pjv.gui;
 import com.google.common.collect.Lists;
-import com.sun.tools.javac.Main;
 import cz.cvut.fel.pjv.board.Board;
 import cz.cvut.fel.pjv.board.BoardUtils;
 import cz.cvut.fel.pjv.board.Move;
@@ -10,6 +9,7 @@ import cz.cvut.fel.pjv.player.MoveTransition;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -40,7 +40,7 @@ public class MainWindow {
     private final BoardPanel boardpanel;
     private boolean highLighLegalMoves;
     private JFrame windowForGame;
-
+    private Timer myTimer;
 
     public MainWindow() {
 
@@ -54,12 +54,17 @@ public class MainWindow {
         this.deadPiecesTable = new DeadPiecesTable();
         this.boardpanel = new BoardPanel();
         this.moveLog = new MoveLog();
+        this.myTimer = new Timer();
         this.boardDirection = BoardDirection.NORMAL;
         this.highLighLegalMoves = false;
         this.windowForGame.add(this.deadPiecesTable, BorderLayout.EAST );
         this.windowForGame.add(this.boardpanel, BorderLayout.CENTER);
         this.windowForGame.add(this.gameHistoryPanel, BorderLayout.WEST);
+        this.windowForGame.add(this.myTimer, BorderLayout.SOUTH);
         this.windowForGame.setVisible(true);
+
+
+
     }
 
     private Board getGameBoard() {
