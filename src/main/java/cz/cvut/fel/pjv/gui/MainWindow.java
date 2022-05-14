@@ -6,6 +6,7 @@ import cz.cvut.fel.pjv.board.Move;
 import cz.cvut.fel.pjv.board.Tile;
 import cz.cvut.fel.pjv.piece.Piece;
 import cz.cvut.fel.pjv.player.MoveTransition;
+import cz.cvut.fel.pjv.player.Player;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -42,6 +43,7 @@ public class MainWindow {
     private JFrame windowForGame;
     public Timer myTimer;
     private TimerThread thred;
+    private boolean bot = false;
 
     public MainWindow() {
 
@@ -49,13 +51,13 @@ public class MainWindow {
         this.windowForGame.setLayout(new BorderLayout());
         final JMenuBar MenuBar = createMenuBar();
         this.windowForGame.setJMenuBar(MenuBar);
-        this.windowForGame.setSize(600, 600);
+        this.windowForGame.setSize(800, 800);
         this.chessBoard = Board.createStandardBoard();
         this.gameHistoryPanel = new GameHistoryPanel();
         this.deadPiecesTable = new DeadPiecesTable();
         this.boardpanel = new BoardPanel();
         this.moveLog = new MoveLog();
-        this.myTimer = new Timer(60);
+        this.myTimer = new Timer(600);
         this.boardDirection = BoardDirection.NORMAL;
         this.highLighLegalMoves = false;
         this.windowForGame.add(this.deadPiecesTable, BorderLayout.EAST );
@@ -119,6 +121,20 @@ public class MainWindow {
 
         preferencesMenu.add(cbLegalMoveHighlighter);
         preferencesMenu.add(cbLegalMoveHighlighter);
+
+        final JCheckBoxMenuItem cbBot = new JCheckBoxMenuItem(
+                "Bot?", false);
+
+        cbBot.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                bot = cbBot.isSelected();
+
+            }
+        });
+
+        preferencesMenu.add(cbBot);
+
         return preferencesMenu;
     }
     //this method make like flip black and white team. Reverse from guava
@@ -166,7 +182,7 @@ public class MainWindow {
                 this.boardTiles.add(tilePanel);
                 add(tilePanel);
             }
-            setSize(500, 500);
+            setSize(700, 600);
             validate();
         }
         //if is preference normal than will for loop in normal way, if preference flipper than will in opposite way
@@ -242,6 +258,27 @@ public class MainWindow {
                             if (transition.getMoveStatus().isDID()) {
                                 chessBoard = transition.getTransitionBoard();
                                 moveLog.addMove(move);
+                                //there when i use  interface Bot? bot change to true and start game with bot. Bot is looking for random moves, until will not find legal move.
+                                if(bot){
+                                    while(true) {
+                                        var playerbot = chessBoard.currentPlayer();
+                                        var pieces = playerbot.getActivePieces();
+                                        Piece piece = (Piece) pieces.toArray()[(int) (Math.random() * pieces.size())];
+                                        var moves = piece.writeLegalMoves(chessBoard);
+                                        if(moves.size()==0)
+                                            continue;
+                                        Move move2 = (Move) moves.toArray()[(int) (Math.random() * moves.size())];
+
+                                        final MoveTransition transition2 = chessBoard.currentPlayer().makeMove(move2);
+                                        if (transition2.getMoveStatus().isDID()) {
+                                            chessBoard = transition2.getTransitionBoard();
+                                            moveLog.addMove(move2);
+                                        }else
+                                            continue;
+                                        break;
+                                    }
+
+                                }
                             }
                             //That will not be pastmove+nextmove;
                             originTile = null;
