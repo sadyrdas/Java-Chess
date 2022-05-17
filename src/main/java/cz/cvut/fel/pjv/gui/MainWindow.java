@@ -370,11 +370,11 @@ public class MainWindow {
         private void makeTileColor() {
             if(BoardUtils.FIRST_ROW[this.IdOfTile] || BoardUtils.THIRD_ROW[this.IdOfTile]
             || BoardUtils.FIFTH_ROW[this.IdOfTile] || BoardUtils.SEVENTH_ROW[this.IdOfTile]) {
-                setBackground(this.IdOfTile % 2 != 0 ? lightTileColor : darkTileColor);
+                setBackground(this.IdOfTile % 2 == 0 ? lightTileColor : darkTileColor);
             }
             if(BoardUtils.SECOND_ROW[this.IdOfTile] ||BoardUtils.FOURTH_ROW[this.IdOfTile]
                 || BoardUtils.SIXTH_ROW[this.IdOfTile] || BoardUtils.EIGHT_ROW[this.IdOfTile]) {
-                setBackground(this.IdOfTile % 2 == 0 ? lightTileColor : darkTileColor);
+                setBackground(this.IdOfTile % 2 != 0 ? lightTileColor : darkTileColor);
             }
         }
     }
